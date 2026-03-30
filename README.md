@@ -1,5 +1,9 @@
 # 👟 OKKO - Toko Sepatu Online
 
+> 🚧 **PROYEK INI MASIH DALAM TAHAP PENGERJAAN / WORK IN PROGRESS** 🚧
+>
+> Beberapa fitur mungkin belum berfungsi sepenuhnya atau masih dalam proses pengembangan. Kontribusi dan saran sangat diterima!
+
 Aplikasi web toko sepatu berbasis **AngularJS** (frontend) dan **Node.js + Express** (backend), lengkap dengan fitur toko, keranjang belanja, checkout, dan panel admin.
 
 ---
@@ -184,11 +188,27 @@ Buka file `index.html` langsung di browser, atau gunakan ekstensi **Live Server*
 
 ---
 
-## 📌 Catatan
+## 📌 Status Pengerjaan
 
-- Proyek ini masih dalam **tahap pengembangan aktif**
-- Data disimpan dalam file JSON lokal (belum menggunakan database seperti MongoDB/MySQL)
-- Semua user yang register otomatis mendapatkan role `admin`
+> ⚠️ Proyek ini **belum selesai** dan masih aktif dikerjakan.
+
+| Fitur | Status |
+|---|---|
+| Halaman Shop | 🔄 Dalam Pengerjaan |
+| Produk Populer | 🔄 Dalam Pengerjaan |
+| Keranjang Belanja | 🔄 Dalam Pengerjaan |
+| Checkout | 🔄 Dalam Pengerjaan |
+| Login / Register User | 🔄 Dalam Pengerjaan |
+| Dashboard Admin | 🔄 Dalam Pengerjaan |
+| Manajemen Produk | 🔄 Dalam Pengerjaan |
+| Manajemen Pesanan | 🔄 Dalam Pengerjaan |
+| Integrasi Database | ❌ Belum Dikerjakan |
+| Payment Gateway | ❌ Belum Dikerjakan |
+
+**Catatan lain:**
+- Data saat ini disimpan dalam file JSON lokal (belum menggunakan database seperti MongoDB/MySQL)
+- Semua user yang register otomatis mendapatkan role `admin` (perlu diperbaiki)
+- Tampilan UI masih bisa berubah sewaktu-waktu
 
 ---
 
