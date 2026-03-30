@@ -1,0 +1,61 @@
+<header class="bg-white border-bottom py-2 py-lg-3" ng-controller="HeaderController">
+    <div class="container-fluid px-md-5">
+        <div class="row align-items-center g-0">
+
+            <div class="col-4 col-lg-2 d-flex align-items-center">
+                <button class="btn p-0 border-0 d-lg-none me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
+                    <i class="fa-solid fa-bars fs-4 text-dark"></i>
+                </button>
+                <a href="#!/" class="text-decoration-none">
+                    <h1 class="header-logo m-0">OKKO</h1>
+                </a>
+            </div>
+
+            <div class="col-lg-7 d-none d-lg-block px-5">
+                <div class="search-container position-relative">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" class="form-control search-input" placeholder="Search for products and brand">
+                </div>
+            </div>
+
+            <div class="col-8 col-lg-3 d-flex align-items-center justify-content-end gap-3 gap-md-4">
+
+                <button class="btn p-0 d-lg-none text-dark">
+                    <i class="fa-solid fa-magnifying-glass fs-5"></i>
+                </button>
+
+                <a href="#!/cart" class="header-icon-link position-relative">
+                    <i class="fa-solid fa-cart-shopping fs-5"></i>
+                    <span class="badge-count">0</span>
+                </a>
+
+                <a href="#!/wishlist" class="header-icon-link d-none d-md-block position-relative">
+                    <i class="fa-regular fa-heart fs-5"></i>
+                    <span class="badge-count">0</span>
+                </a>
+
+                <a href="#!/notifications" class="header-icon-link d-none d-md-block">
+                    <i class="fa-regular fa-bell fs-5"></i>
+                </a>
+
+                <div class="auth-section border-start ps-3 ps-md-4 ms-2">
+                    <div ng-if="!currentUser">
+                        <a href="#!/login" class="btn-login-header">LOGIN</a>
+                    </div>
+                    <div class="dropdown" ng-if="currentUser">
+                        <button class="btn-user-profile dropdown-toggle" data-bs-toggle="dropdown">
+                            <span class="user-initial">{{currentUser.name.charAt(0).toUpperCase()}}</span>
+                            <span class="d-none d-md-inline ms-2">{{currentUser.name.split(' ')[0]}}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-3">
+                            <li><a class="dropdown-item py-2 px-4" href="#!/profile"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider mx-3"></li>
+                            <li><a class="dropdown-item py-2 px-4 text-danger" href="" ng-click="logout()"><i class="fa-solid fa-box-arrow-right me-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,156 @@
+:root {
+    --sidebar-width: 260px;
+    --dark-slate: #111827;
+    --primary-blue: #3b82f6;
+    --text-gray: #9ca3af;
+    --bg-light: #f9fafb;
+}
+
+/* --- Layout Utama --- */
+#wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--bg-light);
+}
+
+#sidebar-wrapper {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background-color: var(--dark-slate);
+    flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+#page-content-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    min-width: 0;
+    transition: all 0.3s ease;
+}
+
+/* --- Navigasi Sidebar --- */
+.menu-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+    color: #4b5563;
+    padding: 0 1.75rem; /* Disesuaikan dengan margin nav-item */
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+}
+
+.nav-item-link {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 8px;
+    margin: 0 0.75rem 4px 0.75rem;
+    transition: all 0.2s ease;
+}
+
+/* Perbaikan alignment Icon FontAwesome agar sejajar lurus */
+.nav-item-link i {
+    font-size: 1.1rem;
+    width: 25px; 
+    display: flex;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.nav-item-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #f3f4f6;
+}
+
+.nav-item-link.active {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+.nav-item-link.active i {
+    color: #ffffff;
+}
+
+.logout-btn:hover {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important;
+}
+
+/* --- Komponen Dashboard --- */
+.card {
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.progress {
+    background-color: #e5e7eb;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    border-radius: 10px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.tracking-tight {
+    letter-spacing: -0.025em;
+}
+
+/* --- Logika Responsif & Toggle --- */
+
+/* Desktop State */
+@media (min-width: 769px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: calc(var(--sidebar-width) * -1);
+    }
+}
+
+/* Mobile State */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: calc(var(--sidebar-width) * -1);
+        position: fixed;
+        height: 100%;
+        z-index: 9999;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    /* Efek Gelap di luar sidebar saat mobile terbuka */
+    #wrapper.toggled::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
+
+    .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}

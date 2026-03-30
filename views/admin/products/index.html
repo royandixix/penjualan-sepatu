@@ -1,0 +1,225 @@
+<div class="container-fluid px-4 py-4">
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <h4 class="fw-black text-dark mb-1" style="letter-spacing: -1px; text-transform: uppercase;">Manajemen
+                Inventaris</h4>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+                    <li class="breadcrumb-item"><a href="#!/admin/dashboard"
+                            class="text-decoration-none text-muted">Dashboard</a></li>
+                    <li class="breadcrumb-item active text-primary fw-bold">Stok Produk</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <button class="btn btn-outline-dark btn-sm rounded-0 me-2 px-3 fw-bold">
+                <i class="fa-solid fa-download me-2"></i>EXPORT
+            </button>
+            <a ng-href="#/admin/products/create" class="btn btn-dark rounded-0 px-4 shadow-sm border-0 fw-bold"
+                style="background: #0f172a; letter-spacing: 0.5px;">
+                <i class="fa-solid fa-plus me-2"></i>TAMBAH PRODUK BARU
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-primary border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase" style="font-size: 0.65rem;">Total
+                    Produk</small>
+                <h4 class="fw-black mb-0">{{ products.length || 0 }}</h4>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-danger border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase" style="font-size: 0.65rem;">Stok
+                    Kritis</small>
+                <h4 class="fw-black mb-0 text-danger">{{ countLowStock() }}</h4>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-warning border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase" style="font-size: 0.65rem;">Produk
+                    Populer</small>
+                <h4 class="fw-black mb-0 text-warning">
+                    {{ (products | filter:{isPopular:true}).length }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-0 mb-0 border-bottom">
+        <div class="card-body py-3">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group input-group-sm border rounded-0 px-2 py-1" style="background: #ffffff;">
+                        <span class="input-group-text bg-transparent border-0 text-muted">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" ng-model="searchQuery"
+                            class="form-control bg-transparent border-0 shadow-none"
+                            placeholder="Cari nama produk atau SKU...">
+                    </div>
+                </div>
+                <div class="col-md-8 text-md-end">
+                    <div class="d-flex justify-content-md-end gap-2">
+                        <select class="form-select form-select-sm w-auto rounded-0 border-dark shadow-none fw-bold"
+                            ng-model="filterCategory" style="font-size: 0.75rem;">
+                            <option value="">SEMUA KATEGORI</option>
+                            <option value="Sneakers">SNEAKERS</option>
+                            <option value="Running">RUNNING</option>
+                            <option value="Casual">CASUAL</option>
+                        </select>
+                        <select class="form-select form-select-sm w-auto rounded-0 border-dark shadow-none fw-bold"
+                            ng-model="filterGender" style="font-size: 0.75rem;">
+                            <option value="">SEMUA GENDER</option>
+                            <option value="Pria">PRIA</option>
+                            <option value="Wanita">WANITA</option>
+                            <option value="Unisex">UNISEX</option>
+                            <option value="Anak-anak">ANAK-ANAK</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="background: #f8fafc;">
+                    <tr
+                        style="font-size: 0.7rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #0f172a;">
+                        <th class="ps-4 py-3 border-0">Info Produk</th>
+                        <th class="py-3 border-0">Kategori</th>
+                        <th class="py-3 border-0">Gender</th>
+                        <th class="py-3 border-0">Harga Satuan</th>
+                        <th class="py-3 border-0" style="width: 220px;">Indikator Stok</th>
+                        <th class="text-end pe-4 py-3 border-0">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody style="font-size: 0.85rem; border-top: 0 !important;">
+                    <tr ng-if="!products || (products | filter:searchQuery | filter:{category: filterCategory} | filter:{gender: filterGender}).length === 0">
+                        <td colspan="6" class="text-center py-5">
+                            <i class="fa-solid fa-folder-open fa-3x mb-3 text-muted opacity-20"></i>
+                            <p class="text-muted fw-bold">DATA TIDAK DITEMUKAN</p>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="p in products | filter:searchQuery | filter:{category: filterCategory} | filter:{gender: filterGender} track by p.id"
+                        class="product-row"
+                        ng-class="{'border-start border-3 border-warning': p.isPopular === true || p.isPopular === 1 || p.isPopular === 'true' || p.isPopular === '1'}">
+
+                        <td class="ps-4 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <img ng-src="{{ p.image && !p.image.startsWith('http') ? 'http://localhost:3000/' + p.image : (p.image || 'assets/images/placeholder.png') }}"
+                                        class="rounded-0 border shadow-sm" width="50" height="50"
+                                        style="object-fit: cover; border: 1px solid #e2e8f0 !important;">
+                                </div>
+                                <div>
+                                    <div class="fw-black text-dark mb-0 text-uppercase"
+                                        style="font-size: 0.8rem; letter-spacing: 0.3px;">
+                                        {{p.name}}
+                                        <span ng-if="p.isPopular === true || p.isPopular === 1 || p.isPopular === 'true' || p.isPopular === '1'"
+                                            class="badge bg-warning text-dark ms-2"
+                                            style="font-size: 0.55rem; letter-spacing: 1px;">
+                                            POPULER
+                                        </span>
+                                    </div>
+                                    <span class="badge bg-light text-muted border rounded-0"
+                                        style="font-size: 0.6rem;">ID: {{p.id}}</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="fw-bold text-uppercase" style="font-size: 0.7rem; color: #64748b;">
+                                {{p.category || 'Umum'}}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="fw-bold text-uppercase" style="font-size: 0.7rem; color: #64748b;">
+                                {{p.gender || '-'}}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="fw-black text-dark">{{ p.price | currency:'Rp ':0 }}</span>
+                        </td>
+
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="progress flex-grow-1"
+                                    style="height: 4px; border-radius: 0; background: #e2e8f0;">
+                                    <div class="progress-bar" ng-class="p.stock < 10 ? 'bg-danger' : 'bg-primary'"
+                                        ng-style="{'width': (p.stock > 100 ? 100 : p.stock) + '%'}">
+                                    </div>
+                                </div>
+                                <span class="fw-black" style="font-size: 0.75rem; min-width: 35px;">
+                                    {{p.stock}}
+                                </span>
+                            </div>
+                        </td>
+
+                        <td class="text-end pe-4">
+                            <div class="btn-group shadow-sm">
+                                <a ng-href="#/admin/products/edit/{{p.id}}"
+                                    class="btn btn-white btn-sm rounded-0 border">
+                                    <i class="fa-solid fa-pen text-primary"></i>
+                                </a>
+
+                                <button class="btn btn-white btn-sm rounded-0 border" ng-click="deleteProduct(p.id)">
+                                    <i class="fa-solid fa-trash text-danger"></i>
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fw-black { font-weight: 800; }
+
+    .product-row {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .product-row:hover {
+        background-color: #f8fafc !important;
+        transform: scale(1.002);
+        box-shadow: inset 4px 0 0 #0f172a;
+    }
+
+    .btn-white {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        transition: 0.2s;
+    }
+
+    .btn-white:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .form-control:focus {
+        border-color: #0f172a !important;
+        background: #fff !important;
+    }
+
+    .table-responsive::-webkit-scrollbar { height: 6px; }
+    .table-responsive::-webkit-scrollbar-thumb { background: #cbd5e1; }
+
+    .progress-bar {
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+</style>

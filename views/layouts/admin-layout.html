@@ -1,0 +1,123 @@
+<div class="d-flex" id="wrapper"
+     ng-controller="AdminLayoutCtrl"
+     ng-class="{'sidebar-open': sidebarOpen, 'sidebar-closed': !sidebarOpen}">
+
+    <!-- OVERLAY MOBILE -->
+    <div class="sidebar-overlay"
+         ng-class="{'active': sidebarOpen}"
+         ng-click="toggleSidebar()">
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar-wrapper">
+        <div ng-include="'views/partials/admin-navbar.html'"></div>
+    </aside>
+
+    <!-- PAGE CONTENT -->
+    <div id="page-content-wrapper">
+
+        <!-- HEADER -->
+        <div ng-include="'views/partials/admin-header.html'"></div>
+
+        <main class="page-content">
+            <div class="container-fluid py-4 px-3 px-md-4">
+
+                <!-- ROUTE VIEW -->
+                <div ng-view></div>
+
+            </div>
+        </main>
+
+    </div>
+
+</div>
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        /* ===== WRAPPER ===== */
+        #wrapper {
+            display: flex;
+            width: 100%;
+        }
+
+        /* ===== SIDEBAR ===== */
+        #sidebar-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            min-width: 260px;
+            max-width: 260px;
+            background: #1e293b;
+            overflow-y: auto;
+            transition: margin 0.3s ease;
+            z-index: 1040;
+        }
+
+        #wrapper.sidebar-closed #sidebar-wrapper {
+            margin-left: -260px;
+        }
+
+        #wrapper.sidebar-open #sidebar-wrapper {
+            margin-left: 0;
+        }
+
+        /* ===== PAGE CONTENT ===== */
+        #page-content-wrapper {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        #wrapper.sidebar-closed #page-content-wrapper {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .page-content {
+            padding-top: 90px;
+            /* ruang header */
+            min-height: 100vh;
+        }
+
+        /* ===== OVERLAY MOBILE ===== */
+        .sidebar-overlay {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+
+            #sidebar-wrapper {
+                margin-left: -260px !important;
+            }
+
+            #wrapper.sidebar-open #sidebar-wrapper {
+                margin-left: 0 !important;
+            }
+
+            #page-content-wrapper {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            .sidebar-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.45);
+                z-index: 1039;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            .sidebar-overlay.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+        }
+    </style>

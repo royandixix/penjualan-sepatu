@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1772873130359,
+    "name": "admin123",
+    "email": "admin@gmail.com",
+    "password": "$2b$10$f9rM3ma0I3oH2FT.QF24ReL8SGG6yJ1ZlvDJSFoD8zEp8dvq1uImu",
+    "role": "admin"
+  },
+  {
+    "id": 1773848496833,
+    "name": "Royandi",
+    "email": "randiroyandi@gmail.com",
+    "password": "$2b$10$.qcwYvkdB5xS0tECjnSJ7.TfA.zy9ZPPmrGC7NU5u8.EMAzqHU5Se",
+    "role": "admin"
+  },
+  {
+    "id": 1773949044395,
+    "name": "TestUser",
+    "email": "testuser@gmail.com",
+    "password": "$2b$10$Zp43grMUPTAveKwGEAPf0.obXkhMC.oC8CE/iuaZmiqer6OaH6fNe",
+    "role": "admin"
+  },
+  {
+    "id": 1773949258230,
+    "name": "randi",
+    "email": "randi@gmail.com",   
+    "password": "$2b$10$XZpy9GGQmHzgObxhzFdYT.o/c3djbzCIEppZjt9/6r.kLZZxRg07e",
+    "role": "admin"
+  } 
+]

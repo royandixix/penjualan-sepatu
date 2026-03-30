@@ -1,0 +1,92 @@
+<main class="container-fluid py-4 px-md-5">
+
+    <div class="page-header-area mb-4">
+        <nav class="mb-2 d-none d-md-block text-muted small" style="font-size:10px;letter-spacing:1px;">
+            HOME / PRODUCT / <span class="fw-bold text-dark text-uppercase">Sales</span>
+        </nav>
+        <h3 class="fw-bold mb-0">Shop Sepatu</h3>
+        <p class="text-muted small mb-0">Temukan koleksi populer terbaik untukmu</p>
+    </div>
+
+    <div class="row g-0 align-items-start">
+
+        <aside class="col-lg-2 d-none d-lg-block border-end pe-4" style="position:sticky;top:140px;z-index:100;">
+            <div style="max-height:calc(100vh - 160px);overflow-y:auto;">
+                <h6 class="fw-bold mb-4" style="font-size:11px;letter-spacing:1.5px;">FILTER</h6>
+                <div ng-include="'views/user/shop/filter-content.html'"></div>
+                <div class="py-5"></div>
+            </div>
+        </aside>
+
+        <section class="col-lg-10 ps-lg-5">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <span class="text-muted small">{{products.length}} Produk ditemukan</span>
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <button class="btn btn-outline-dark btn-sm d-lg-none px-2 py-1" style="font-size:11px;"
+                        data-bs-toggle="offcanvas" data-bs-target="#filterSidebar">
+                        <i class="fa-solid fa-filter"></i>
+                    </button>
+
+                    <select class="form-select form-select-sm border-dark shadow-none"
+                        style="width:auto;font-size:12px;">
+                        <option>Terbaru</option>
+                        <option>Harga: Rendah ke Tinggi</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="row g-3 g-md-4">
+                <div class="col-6 col-md-4 col-xl-3" ng-repeat="product in products">
+
+                    <div class="h-100 d-flex flex-column bg-white" ng-click="goToCheckout(product.id)"
+                        style="cursor:pointer;">
+
+                        <div class="position-relative overflow-hidden rounded-2 mb-3 bg-light"
+                            style="aspect-ratio:1/1;">
+                            <img ng-src="{{product.image}}" class="w-100 h-100 object-fit-cover shadow-sm">
+                        </div>  
+
+                        <h6 class="fw-bold mb-1 text-truncate" style="font-size:14px;">
+                            {{product.name}}
+                        </h6>
+
+                        <p class="text-muted mb-2" style="font-size:12px;line-height:1.4;height:32px;overflow:hidden;">
+                            {{product.description}}
+                        </p>
+
+                        <div class="fw-bold text-dark mb-3">
+                            Rp {{product.price | number}}
+                        </div>
+
+                        <button class="btn btn-dark btn-sm w-100 py-2 rounded-1 fw-bold" style="font-size:11px;"
+                            ng-click="$event.stopPropagation();addToCart(product)">
+                            TAMBAH KE KERANJANG
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="filterSidebar" style="width:280px;">
+        <div class="offcanvas-header border-bottom">
+            <h6 class="fw-bold mb-0">FILTER</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body">
+            <div ng-include="'views/user/shop/filter-content.html'"></div>
+        </div>
+    </div>
+
+</main>

@@ -1,0 +1,190 @@
+<nav class="navbar custom-topbar">
+    <div class="container-fluid px-3 d-flex align-items-center justify-content-between">
+
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-toggle-navy" ng-click="toggleSidebar()">
+                <i class="fas fa-bars fs-5"></i>
+            </button>
+
+            <div class="store-brand-group">
+                <h6 class="mb-0 fw-bold text-white letter-spacing-tight">
+                    Toko Penjualan Sepatu OKKO
+                </h6>
+                <small class="text-info-muted d-none d-md-block">
+                    Dashboard Admin System
+                </small>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            
+            <div class="text-end d-none d-sm-block me-2">
+                <small class="text-info-muted d-block" style="font-size: 10px;">Welcome back,</small>
+                <strong class="text-white small">
+                    {{currentUser.name || 'Administrator'}}
+                </strong>
+            </div>
+
+            <div class="nav-icon-dark position-relative">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge"></span>
+            </div>
+
+            <div class="dropdown">
+                <div class="avatar-wrapper dropdown-toggle" data-bs-toggle="dropdown" style="cursor:pointer;">
+                    <img ng-src="https://ui-avatars.com/api/?name={{currentUser.name || 'Admin'}}&background=0D6EFD&color=fff"
+                         class="rounded-circle avatar-img"
+                         width="38">
+                </div>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-3 animate-slide-in">
+                    <li class="px-3 py-2 border-bottom mb-2">
+                        <span class="d-block small fw-bold">
+                            {{currentUser.name || 'OKKO Admin'}}
+                        </span>
+                        <span class="text-muted" style="font-size: 11px;">
+                            {{currentUser.email || 'admin@okko-store.com'}}
+                        </span>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="">
+                            <i class="fas fa-user-circle me-2"></i>Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="">
+                            <i class="fas fa-cog me-2"></i>Settings
+                        </a>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+                        <a class="dropdown-item text-danger" href="" ng-click="logout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<style>
+/* 1. Global Navbar Styles */
+.custom-topbar {
+    position: fixed;
+    top: 0;
+    left: 260px; /* Lebar Sidebar */
+    width: calc(100% - 260px);
+    height: 75px;
+    z-index: 1030;
+    background: #0f172a; /* Warna Biru Navy Sidebar */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Penyesuaian saat Sidebar Tertutup */
+#wrapper.sidebar-closed .custom-topbar {
+    left: 0;
+    width: 100%;
+}
+
+/* 2. Typography & Colors */
+.letter-spacing-tight {
+    letter-spacing: -0.5px;
+}
+
+.text-info-muted {
+    color: #94a3b8; /* Biru Abu-abu terang */
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* 3. Interactive Elements */
+.btn-toggle-navy {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px 14px;
+    transition: 0.3s;
+}
+
+.btn-toggle-navy:hover {
+    background: #0d6efd;
+    color: white;
+    box-shadow: 0 0 15px rgba(13, 110, 253, 0.4);
+}
+
+.nav-icon-dark {
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #cbd5e1;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.3s;
+}
+
+.nav-icon-dark:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #38bdf8;
+    border-color: #38bdf8;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border: 2px solid #0f172a;
+    border-radius: 50%;
+}
+
+/* 4. Avatar & Dropdown Animation */
+.avatar-wrapper {
+    transition: 0.3s;
+}
+
+.avatar-img {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 2px;
+}
+
+.avatar-wrapper:hover .avatar-img {
+    border-color: #0d6efd;
+    transform: rotate(5deg);
+}
+
+.animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 5. Mobile Adjustment */
+@media (max-width: 768px) {
+    .custom-topbar {
+        left: 0 !important;
+        width: 100% !important;
+    }
+    .store-brand-group h6 {
+        font-size: 14px;
+    }
+}
+</style>

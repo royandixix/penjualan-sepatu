@@ -1,0 +1,146 @@
+<nav class="navbar navbar-expand-lg bg-white border-bottom py-0 d-none d-lg-flex sticky-top">
+    <div class="container justify-content-center">
+        <ul class="navbar-nav gap-2">
+            <li class="nav-item">
+                <a class="nav-link nav-custom px-3 py-3" href="#!/shop">Semua Produk</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom px-3 py-3" ng-click="go('/produk-populer')">Produk Populer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom px-3 py-3 text-danger" href="#!/sale">Cuci Gudang</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-custom px-3 py-3 dropdown-toggle">Kategori</a>
+                <ul class="dropdown-menu border-0 shadow-lg mt-0 rounded-0 py-3">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item d-flex justify-content-between align-items-center py-2 px-4">
+                            Sepatu Laki-laki <i class="bi bi-chevron-right small"></i>
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg rounded-0 py-3">
+                            <li><a class="dropdown-item py-2 px-4" href="#!/category/men-sneakers">Sneakers</a></li>
+                            <li><a class="dropdown-item py-2 px-4" href="#!/category/men-running">Sepatu Lari</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item d-flex justify-content-between align-items-center py-2 px-4">
+                            Sepatu Perempuan <i class="bi bi-chevron-right small"></i>
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg rounded-0 py-3">
+                            <li><a class="dropdown-item py-2 px-4" href="#!/category/women-sneakers">Sneakers</a></li>
+                            <li><a class="dropdown-item py-2 px-4" href="#!/category/women-running">Sepatu Lari</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-custom px-3 py-3" href="#!/more">Lainnya</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="offcanvas offcanvas-start border-0" tabindex="-1" id="sidebarMobile">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold">MENU</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <ul class="list-unstyled mb-0">
+            <li><a class="nav-link p-3 border-bottom text-dark fw-semibold" href="#!/shop">Semua Produk</a></li>
+            <li><a class="nav-link p-3 border-bottom text-dark fw-semibold" ng-click="go('/produk-populer')">Produk Populer</a></li>
+            <li><a class="nav-link p-3 border-bottom text-danger fw-bold" href="#!/sale">Cuci Gudang</a></li>
+            <li class="border-bottom">
+                <a class="nav-link p-3 text-dark fw-semibold d-flex justify-content-between align-items-center" 
+                   data-bs-toggle="collapse" href="#kategoriMobile" role="button">
+                    Kategori <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse bg-light" id="kategoriMobile">
+                    <ul class="list-unstyled">
+                        <li><a class="nav-link ps-4 py-2 border-bottom" href="#!/category/men-sneakers">Sneakers Laki-laki</a></li>
+                        <li><a class="nav-link ps-4 py-2 border-bottom" href="#!/category/men-running">Sepatu Lari Laki-laki</a></li>
+                        <li><a class="nav-link ps-4 py-2 border-bottom" href="#!/category/women-sneakers">Sneakers Perempuan</a></li>
+                        <li><a class="nav-link ps-4 py-2" href="#!/category/women-running">Sepatu Lari Perempuan</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a class="nav-link p-3 text-dark fw-semibold" href="#!/more">Lainnya</a></li>
+        </ul>
+    </div>
+</div>
+<style>
+    .nav-custom {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #1a1a1a !important;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .nav-custom::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #000;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateX(-50%);
+    }
+
+    .nav-custom:hover::after {
+        width: 80%;
+    }
+
+    .dropdown-item {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #444;
+        transition: all 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #000;
+        padding-left: 1.75rem !important;
+    }
+
+    @media(min-width: 992px) {
+        .navbar .dropdown:hover > .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: -10px;
+            left: 100%;
+            display: none;
+            margin-left: 0;
+        }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .offcanvas .nav-link {
+        font-size: 0.9rem;
+    }
+
+    .offcanvas .nav-link:active {
+        background-color: #eeeeee;
+    }
+</style>

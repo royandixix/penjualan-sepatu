@@ -1,0 +1,529 @@
+<div class="container-fluid px-lg-5 py-5 bg-modern">
+
+    <div class="d-flex align-items-end justify-content-between mb-5 pb-4 border-bottom">
+        <div>
+            <nav class="mb-2">
+                <a href="#!/admin/products" class="text-nav-back text-decoration-none text-uppercase">
+                    <i class="fa-solid fa-arrow-left-long me-2"></i> Kembali ke Inventaris
+                </a>
+            </nav>
+            <h1 class="display-title mb-0 text-uppercase">Sunting Produk</h1>
+            <p class="sub-text mb-0">Perbarui detail katalog digital OKKO Store — Presisi & Detail.</p>
+        </div>
+        <div class="d-flex gap-3">
+            <button type="button" class="btn-minimal-light" ng-click="cancel()">
+                BATALKAN
+            </button>
+            <button type="button" ng-click="saveProduct()" class="btn-minimal-dark shadow-sm" ng-disabled="loading">
+                <span ng-if="!loading">SIMPAN PERUBAHAN</span>
+                <span ng-if="loading"><i class="fa-solid fa-spinner fa-spin me-2"></i> MEMPROSES...</span>
+            </button>
+        </div>
+    </div>
+
+    <form id="productForm" name="productForm" novalidate>
+        <div class="row g-5">
+
+            <div class="col-lg-8">
+
+                <div class="form-wrapper-modern mb-5">
+                    <h5 class="section-label-premium">01. Identitas Utama</h5>
+                    <div class="mb-5">
+                        <label class="label-premium text-uppercase">Nama Lengkap Produk</label>
+                        <input type="text" class="input-minimal-lg" ng-model="product.name"
+                            placeholder="Contoh: NIKE AIR JORDAN 1 LOW 'PANDA'" required>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="label-premium text-uppercase">Brand / Merk</label>
+                            <input type="text" class="input-minimal-sm" ng-model="product.brand" list="brandList"
+                                placeholder="Cari Brand...">
+                            <datalist id="brandList">
+                                <option ng-repeat="val in getUniqueValues('brand')" value="{{val}}"></option>
+                            </datalist>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="label-premium text-uppercase">Kategori</label>
+                            <input type="text" class="input-minimal-sm" ng-model="product.category" list="categoryList"
+                                placeholder="Pilih Kategori...">
+                            <datalist id="categoryList">
+                                <option ng-repeat="val in getUniqueValues('category')" value="{{val}}"></option>
+                            </datalist>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="label-premium text-uppercase">Target Pengguna</label>
+                            <select class="select-minimal-sm w-100" ng-model="product.gender" required>
+                                <option value="" disabledselected>Pilih...</option>
+                                <option value="Pria">Pria</option>
+                                <option value="Wanita">Wanita</option>
+                                <option value="Unisex">Unisex</option>
+                                <option value="Anak-anak">Anak-anak</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-wrapper-modern mb-5">
+                    <h5 class="section-label-premium">02. Atribut & Varian</h5>
+
+                    <div class="mb-4">
+                        <label class="label-premium text-uppercase">Palet Warna (Klik berulang untuk kuantitas)</label>
+                        <div class="color-palette-grid mt-3">
+                            <div class="color-node" ng-repeat="c in availableColors">
+                                <div class="swatch-circle" ng-style="{'background-color': getHexColor(c) || c}"
+                                    ng-click="addColorCount(c)" title="{{c}}">
+                                    <span class="count-badge-premium" ng-if="product.colorMap[c] > 0">
+                                        {{ product.colorMap[c] }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="variant-summary-card mb-4" ng-if="hasColors()">
+                        <label class="text-uppercase fw-bold mb-3 d-block"
+                            style="font-size: 10px; color: #888;">Ringkasan Varian Terpilih:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <div ng-repeat="(name, count) in product.colorMap" class="color-tag-premium"
+                                ng-if="count > 0">
+                                <span class="tag-color-name">{{ name }}</span>
+                                <span class="tag-multiplier">x{{ count }}</span>
+                                <button type="button" class="btn-remove-count" ng-click="removeColorCount(name)">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="label-premium text-uppercase">Deskripsi Material & Detail</label>
+                        <textarea class="textarea-minimal" ng-model="product.description" rows="4"
+                            placeholder="Tuliskan spesifikasi produk di sini..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="label-premium text-uppercase">Ketersediaan Ukuran (EUR/US)</label>
+                        <div class="d-flex gap-2 mb-3 mt-2" style="max-width: 400px;">
+                            <input type="text" class="input-minimal-sm" ng-model="newSizeInput"
+                                placeholder="Contoh: 42.5" ng-keypress="$event.keyCode === 13 && addCustomSize()">
+                            <button class="btn-add-size-premium" type="button"
+                                ng-click="addCustomSize()">TAMBAH</button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span ng-repeat="s in product.sizes track by $index" class="size-pill-premium">
+                                {{s}} <i class="fa-solid fa-xmark ms-2" ng-click="removeSize($index)"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-wrapper-modern">
+                    <h5 class="section-label-premium">03. Finansial & Inventaris</h5>
+                    <div class="row align-items-end">
+                        <div class="col-md-7">
+                            <label class="label-premium text-uppercase">Harga Jual Satuan (IDR)</label>
+                            <div class="price-input-wrapper mt-2">
+                                <span class="currency-symbol">RP</span>
+                                <input type="number" class="price-input-field" ng-model="product.price" placeholder="0">
+                            </div>
+                            <p class="preview-price-text mt-2 mb-0" ng-if="product.price > 0">
+                                Terbaca: <strong>{{ product.price | currency:'Rp ':0 }}</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="label-premium text-uppercase">Total Stok</label>
+                            <div class="stock-input-wrapper mt-2">
+                                <input type="number" class="stock-input-field" ng-model="product.stock" placeholder="0">
+                                <span class="stock-unit">UNIT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="sticky-sidebar">
+
+                    <div class="sidebar-premium-card mb-4">
+                        <h5 class="section-label-premium">Visual Utama</h5>
+                        <div class="upload-zone-premium mt-3">
+                            <img ng-show="product.image" ng-src="{{product.image}}" class="img-preview-main">
+                            <div ng-show="!product.image" class="upload-empty-state">
+                                <i class="fa-light fa-camera-retro fa-3x mb-3 text-muted"></i>
+                                <span class="fw-bold text-muted small">UNGGAH FOTO</span>
+                            </div>
+                            <input type="file" class="file-overlay-input" accept="image/*"
+                                onchange="angular.element(this).scope().$apply(function(scope){ scope.previewFile(this.files) }.bind(this))">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-premium-card mb-4">
+                        <h5 class="section-label-premium d-flex align-items-center">
+                            <i class="fa-solid fa-truck-fast me-2" style="font-size: 0.8rem;"></i>
+                            Rantai Pasok
+                        </h5>
+                        <div class="mt-3">
+                            <div class="mb-4">
+                                <label class="label-premium text-uppercase" style="font-size: 9px;">Penyedia /
+                                    Supplier</label>
+                                <input type="text" class="input-line-sm-premium" ng-model="product.supplierName"
+                                    placeholder="Nama vendor...">
+                            </div>
+                            <div class="mb-4">
+                                <label class="label-premium text-uppercase" style="font-size: 9px;">Alamat
+                                    Operasional</label>
+                                <textarea class="textarea-minimal-sm" ng-model="product.supplierAddress" rows="2"
+                                    placeholder="Lokasi gudang/kantor..."></textarea>
+                            </div>
+                            <div class="mb-0">
+                                <label class="label-premium text-uppercase" style="font-size: 9px;">Batch
+                                    Quantity</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" class="input-line-sm-premium" ng-model="product.supplierQty"
+                                        placeholder="0">
+                                    <span class="badge bg-light text-dark border"
+                                        style="font-size: 9px; padding: 5px 8px;">UNIT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-premium-card shadow-sm">
+                        <h5 class="section-label-premium">Catalog Status</h5>
+                        <div
+                            class="setting-item-premium border-bottom py-3 d-flex justify-content-between align-items-center">
+                            <div class="setting-info">
+                                <span class="d-block fw-bold small">Publikasikan</span>
+                                <small class="text-muted" style="font-size: 10px;">Aktifkan di etalase</small>
+                            </div>
+                            <div class="form-check form-switch m-0 p-0">
+                                <input class="form-check-input switch-premium" type="checkbox"
+                                    ng-model="product.isActive" style="margin-left: 0;">
+                            </div>
+                        </div>
+                        <div class="setting-item-premium py-3 d-flex justify-content-between align-items-center">
+                            <div class="setting-info">
+                                <span class="d-block fw-bold small">Hot Item</span>
+                                <small class="text-muted" style="font-size: 10px;">Tampilkan tag populer</small>
+                            </div>
+                            <div class="form-check form-switch m-0 p-0">
+                                <input class="form-check-input switch-premium" type="checkbox"
+                                    ng-model="product.isPopular" style="margin-left: 0;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    .bg-modern {
+        background-color: #fff;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        color: #111;
+    }
+
+    .display-title {
+        font-weight: 800;
+        font-size: 2.2rem;
+        letter-spacing: -0.05em;
+    }
+
+    .sub-text {
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    .text-nav-back {
+        color: #000;
+        font-weight: 700;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+    }
+
+    .section-label-premium {
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #bbb;
+        letter-spacing: 0.15em;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-label-premium::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #f0f0f0;
+        margin-left: 15px;
+    }
+
+    .label-premium {
+        font-size: 10px;
+        font-weight: 800;
+        color: #999;
+        letter-spacing: 0.05em;
+        display: block;
+    }
+
+    .input-minimal-lg {
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid #eee;
+        padding: 15px 0;
+        font-size: 1.5rem;
+        font-weight: 300;
+        outline: none;
+        background: transparent;
+    }
+
+    .input-minimal-sm,
+    .select-minimal-sm {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        outline: none;
+        background: transparent;
+    }
+
+    .textarea-minimal {
+        width: 100%;
+        border: 1px solid #eee;
+        padding: 15px;
+        font-size: 0.9rem;
+        outline: none;
+        min-height: 100px;
+    }
+
+    .textarea-minimal-sm {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 8px 0;
+        font-size: 0.85rem;
+        outline: none;
+        background: transparent;
+        resize: none;
+    }
+
+    .color-palette-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 12px;
+        max-width: 450px;
+    }
+
+    .color-node {
+        position: relative;
+        width: 32px;
+        height: 32px;
+    }
+
+    .swatch-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    .count-badge-premium {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #000;
+        color: #fff;
+        font-size: 9px;
+        font-weight: 900;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #fff;
+        pointer-events: none;
+    }
+
+    .variant-summary-card {
+        background: #fbfbfb;
+        padding: 15px;
+        border: 1px solid #f0f0f0;
+    }
+
+    .color-tag-premium {
+        background: #000;
+        color: #fff;
+        padding: 5px 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .tag-multiplier {
+        background: rgba(255, 255, 255, 0.2);
+        margin: 0 8px;
+        padding: 1px 5px;
+        font-size: 9px;
+    }
+
+    .btn-remove-count {
+        background: none;
+        border: none;
+        color: #ff4d4f;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .price-input-wrapper,
+    .stock-input-wrapper {
+        display: flex;
+        align-items: baseline;
+        border-bottom: 3px solid #000;
+    }
+
+    .price-input-field {
+        border: none;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 2.2rem;
+        font-weight: 200;
+        outline: none;
+    }
+
+    .stock-input-field {
+        border: none;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        outline: none;
+        text-align: right;
+    }
+
+    .currency-symbol,
+    .stock-unit {
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: #bbb;
+    }
+
+    .sidebar-premium-card {
+        border: 1px solid #f0f0f0;
+        padding: 20px;
+        background: #fff;
+        margin-bottom: 20px;
+    }
+
+    .upload-zone-premium {
+        background: #fcfcfc;
+        border: 1px dashed #ddd;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .img-preview-main {
+        width: 100%;
+        height: 280px;
+        object-fit: contain;
+    }
+
+    .file-overlay-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 5;
+    }
+
+    .input-line-sm-premium {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 6px 0;
+        font-size: 0.9rem;
+        outline: none;
+    }
+
+    .form-switch .form-check-input.switch-premium {
+        width: 40px !important;
+        height: 20px !important;
+        background-color: #e9e9ea !important;
+        border: none !important;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e") !important;
+        transition: background-color 0.2s ease-in-out;
+        float: none;
+        margin: 0;
+    }
+
+    .form-switch .form-check-input.switch-premium:checked {
+        background-color: #000 !important;
+        background-position: right center !important;
+    }
+
+    .btn-minimal-dark {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .btn-minimal-light {
+        background: #f5f5f7;
+        color: #000;
+        border: none;
+        padding: 12px 25px;
+        font-weight: 600;
+    }
+
+    .size-pill-premium {
+        background: #f5f5f7;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn-add-size-premium {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 5px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sticky-sidebar {
+        position: sticky;
+        top: 20px;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>

@@ -1,0 +1,85 @@
+<div class="filter-section">
+    <div class="filter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+        data-bs-target="#colorCollapse" style="cursor: pointer;">
+        <span class="fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Color</span>
+        <i class="fa-solid fa-chevron-down small"></i>
+    </div>
+
+    <p class="text-muted mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+        Pilih warna favorit untuk gaya unikmu
+    </p>
+
+    <div class="collapse show" id="colorCollapse">
+        <div class="row g-2">
+            <div class="col-6 col-md-12 col-xl-6" ng-repeat="color in ['Black', 'Blue', 'Brown', 'Cream', 'Gold']">
+                <button class="btn btn-outline-dark w-100 d-flex align-items-center gap-2 px-2 py-2"
+                    style="font-size: 0.75rem; border-color: #dee2e6; text-align: left; background: white; color: black;">
+                    <span class="dot-color" ng-class="'bg-' + color.toLowerCase()"
+                        style="width: 10px; height: 10px; border-radius: 50%; display: inline-block; border: 1px solid #ddd;"></span>
+                    {{color | uppercase}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filter-section mt-4">
+    <div class="filter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+        data-bs-target="#sizeCollapse" style="cursor: pointer;">
+        <span class="fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">Size</span>
+        <i class="fa-solid fa-chevron-down small"></i>
+    </div>
+
+    <p class="text-muted mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+        Sesuaikan ukuran dengan kenyamanan kakimu
+    </p>
+
+    <div class="collapse show" id="sizeCollapse">
+        <div class="d-flex flex-wrap gap-1">
+            <button class="btn btn-outline-dark d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px; font-size: 0.8rem; border-color: #dee2e6; background: white; color: black;"
+                ng-repeat="size in [37,38,39,40,41,42,43,44,45]">
+                {{size}}
+            </button>
+        </div>
+    </div>
+    <div class="mt-2">
+        <a href="#" class="text-dark small text-decoration-underline" style="font-size: 0.7rem;">Panduan Ukuran</a>
+    </div>
+</div>
+
+<style>
+    .filter-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* Efek Hover untuk Tombol Filter */
+    .filter-section button:hover {
+        background-color: #000 !important;
+        color: #fff !important;
+        border-color: #000 !important;
+    }
+
+    /* Warna Dot Manual jika Bootstrap belum cover */
+    .bg-black {
+        background-color: #000;
+    }
+
+    .bg-blue {
+        background-color: #0000FF;
+    }
+
+    .bg-brown {
+        background-color: #8B4513;
+    }
+
+    .bg-cream {
+        background-color: #FFFDD0;
+    }
+
+    .bg-gold {
+        background-color: #FFD700;
+    }
+</style>

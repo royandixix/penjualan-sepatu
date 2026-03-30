@@ -1,0 +1,81 @@
+<div class="container-fluid px-0">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Ringkasan Analitik</h3>
+            <p class="text-muted small mb-0">Pantau performa toko Anda secara real-time.</p>
+        </div>
+        <span class="badge bg-white text-dark border px-3 py-2 rounded-pill shadow-sm align-self-start">
+            <i class="fa-solid fa-calendar-day me-2 text-primary"></i> 
+            {{ today | date:'dd MMMM yyyy' }}
+        </span>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3" ng-repeat="item in summaryCards">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-{{item.color}} bg-opacity-10 p-3 rounded-4">
+                        <i class="fa-solid {{item.icon}} text-{{item.color}} fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="text-muted small mb-1 fw-medium">{{item.label}}</h6>
+                        <h4 class="fw-bold mb-0 text-dark">{{item.value}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-1">Performa Penjualan Mingguan</h5>
+                        <small class="text-muted">Tren pendapatan selama 7 hari terakhir</small>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-3" type="button">
+                            <i class="fa-solid fa-ellipsis-vertical text-muted"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="position: relative; height: 320px; width: 100%;">
+                    <canvas id="mainSalesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-1">Status Stok Produk</h5>
+                    <small class="text-muted">Ketersediaan stok berdasarkan kategori</small>
+                </div>
+                
+                <div class="mt-2">
+                    <div class="mb-4" ng-repeat="cat in categories">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="small fw-bold text-dark">{{cat.name}}</span>
+                            <span class="badge bg-{{cat.color}} bg-opacity-10 text-{{cat.color}} rounded-pill" style="font-size: 0.7rem;">
+                                {{cat.percent}}%
+                            </span>
+                        </div>
+                        <div class="progress rounded-pill shadow-sm" style="height: 8px; background-color: #f1f5f9;">
+                            <div class="progress-bar bg-{{cat.color}} progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" 
+                                 ng-style="{'width': cat.percent + '%'}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-auto pt-3 border-top">
+                    <a href="#!/admin/products" class="btn btn-outline-primary btn-sm w-100 rounded-3 fw-bold py-2">
+                        Lihat Laporan Lengkap
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

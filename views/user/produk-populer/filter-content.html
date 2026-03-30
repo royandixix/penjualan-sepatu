@@ -1,0 +1,120 @@
+<div class="filter-section">
+    <div class="filter-header" data-bs-toggle="collapse" data-bs-target="#colorCollapse">
+        <span>COLOR</span>
+        <i class="bi bi-chevron-down"></i>
+    </div>
+
+    <p class="text-muted mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+        Pilih warna favorit untuk gaya unikmu
+    </p>
+
+    <div class="collapse show" id="colorCollapse">
+        <div class="row g-2">
+
+            <div class="col-6 col-md-12 col-xl-6" ng-repeat="color in getAvailableColors()">
+                <button class="btn-filter-item" ng-click="selectColor(color)"
+                    ng-class="{'active': selectedColor === color}">
+                    <span class="dot-color" ng-style="{'background': getColorHex(color)}"></span>
+                    {{color | uppercase}}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="filter-section mt-4">
+    <div class="filter-header" data-bs-toggle="collapse" data-bs-target="#sizeCollapse">
+        <span>SIZE</span>
+        <i class="bi bi-chevron-down"></i>
+    </div>
+
+    <p class="text-muted mb-2" style="font-size: 0.7rem;">
+        Sesuaikan ukuran dengan kenyamanan kakimu
+    </p>
+
+    <div class="collapse show" id="sizeCollapse">
+        <div class="d-flex flex-wrap gap-1">
+
+            <button class="btn-size" ng-repeat="size in [37,38,39,40,41,42,43,44,45]" ng-click="selectSize(size)"
+                ng-class="{'active': selectedSize == size}">
+                {{size}}
+            </button>
+
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <a href="#" class="text-dark small text-decoration-underline">
+            Panduan Ukuran
+        </a>
+    </div>
+</div>
+<style>
+    .filter-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        margin-bottom: 15px;
+    }
+
+    .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        cursor: pointer;
+        margin-bottom: 5px;
+    }
+
+    .btn-filter-item {
+        width: 100%;
+        background: white;
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        font-size: 0.75rem;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s;
+    }
+
+    .btn-filter-item:hover {
+        border-color: #000;
+        background: #f8f9fa;
+    }
+
+    .dot-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-size {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 1px solid #dee2e6;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+    }
+
+    .btn-size:hover {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+    }
+
+    /* 🔥 ACTIVE */
+    .active {
+        background: #000 !important;
+        color: #fff !important;
+        border-color: #000 !important;
+    }
+</style>

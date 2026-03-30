@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="sepatuStore">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKKO - Sepatu Store</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/user.css">
+
+    <style>
+        .goog-te-banner-frame.skiptranslate { display:none !important; }
+        body { top:0 !important; }
+        .goog-te-balloon-frame { display:none !important; }
+        font { background:transparent !important; box-shadow:none !important; }
+    </style>
+
+    <!-- ANGULAR -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.8.2/angular-route.min.js"></script>
+
+    <!-- CHART -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- APP -->
+    <script src="app.js"></script>
+
+    <!-- SERVICES -->
+    <script src="js/services/auth/AuthService.js"></script>
+    <script src="js/services/cart/CartService.js"></script>
+    <script src="js/services/order/OrderService.js"></script>
+    <script src="js/services/product/ProductService.js"></script>
+
+    <!-- DIRECTIVES -->
+    <script src="js/directives/productCardDirective.js"></script>
+
+    <!-- USER CONTROLLERS -->
+    <script src="js/controllers/user/components/header/HeaderController.js"></script>
+    <script src="js/controllers/user/shop/ShopController.js"></script>
+    <script src="js/controllers/user/cart/CartController.js"></script>
+    <script src="js/controllers/user/checkout/CheckoutController.js"></script>
+    <script src="js/controllers/user/produk-populer/ProdukPopulerController.js"></script>
+
+    <!-- ADMIN AUTH -->
+    <script src="js/controllers/auth/admin/AdminLoginController.js"></script>
+    <script src="js/controllers/auth/admin/AdminRegisterController.js"></script>
+
+    <!-- ADMIN CONTROLLERS -->
+    <script src="js/controllers/admin/dashboard/AdminDashboardController.js"></script>
+    <script src="js/controllers/admin/product/ProductsAdminController.js"></script>
+    <script src="js/controllers/admin/order/AdminOrdersController.js"></script>
+
+</head>
+
+<body ng-cloak>
+
+    <!-- ================= ADMIN ================= -->
+    <div ng-if="isAdminPage && !isAdminAuthPage">
+        <div ng-controller="AdminLayoutCtrl">
+            <div ng-include="'views/layouts/admin-layout.html'"></div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN / REGISTER -->
+    <div ng-if="isAdminAuthPage">
+        <div ng-view></div>
+    </div>
+
+    <!-- ================= USER ================= -->
+    <div ng-if="!isAdminPage">
+
+        <!-- HEADER -->
+        <header class="sticky-top bg-white shadow-sm" style="z-index:1050;">
+            <div ng-include="'views/partials/user-header.html'"></div>
+            <div ng-include="'views/partials/navbar/user-navbar.html'"></div>
+        </header>
+
+        <!-- 🔥 INI YANG PALING PENTING -->
+        <div ng-view></div>
+
+    </div>
+
+    <!-- GOOGLE TRANSLATE -->
+    <div id="google_translate_element"></div>
+
+    <!-- BOOTSTRAP -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    function googleTranslateElementInit(){
+        new google.translate.TranslateElement({
+            pageLanguage:'id',
+            includedLanguages:'en,id',
+            layout:google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay:false
+        },'google_translate_element');
+    }
+    </script>
+
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<div class="sidebar-header px-4 py-4">
+    <a href="#/admin/dashboard" class="d-flex align-items-center text-decoration-none">
+        <div class="logo-icon bg-primary rounded-circle d-flex align-items-center justify-content-center"
+            style="width: 32px; height: 32px;">
+            <i class="fa-solid fa-bolt-lightning text-white small"></i>
+        </div>
+        <span class="ms-2 fw-bolder text-white tracking-tight fs-5">
+            SHOESTORE
+        </span>
+    </a>
+</div>
+
+<div class="sidebar-nav px-3">
+
+    <!-- ================= UTAMA ================= -->
+    <div class="menu-label text-muted mb-2 ps-2">UTAMA</div>
+    <nav class="nav flex-column">
+        <a href="#/admin/dashboard" class="nav-item-link" ng-class="{active: activePath === '/admin/dashboard'}">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+    </nav>
+
+    <!-- ================= PRODUK ================= -->
+    <div class="menu-label text-muted mt-4 mb-2 ps-2">PRODUK</div>
+    <nav class="nav flex-column">
+
+        <a href="#/admin/products" class="nav-item-link" ng-class="{active: activePath === '/admin/products'}">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Stok Produk</span>
+        </a>
+
+        <a href="#/admin/products/create" class="nav-item-link"
+            ng-class="{active: activePath === '/admin/products/create'}">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Tambah Produk</span>
+        </a>
+
+        <a href="#/admin/categories" class="nav-item-link" ng-class="{active: activePath === '/admin/categories'}">
+            <i class="fa-solid fa-list"></i>
+            <span>Kategori</span>
+        </a>
+
+        <a href="#/admin/suppliers" class="nav-item-link" ng-class="{active: activePath === '/admin/suppliers'}">
+            <i class="fa-solid fa-truck"></i>
+            <span>Supplier</span>
+        </a>
+
+    </nav>
+
+    <!-- ================= TRANSAKSI ================= -->
+    <div class="menu-label text-muted mt-4 mb-2 ps-2">TRANSAKSI</div>
+    <nav class="nav flex-column">
+
+        <a href="#/admin/orders" class="nav-item-link" ng-class="{active: activePath === '/admin/orders'}">
+            <i class="fa-solid fa-receipt"></i>
+            <span>Daftar Pesanan</span>
+        </a>
+
+        <a href="#/admin/payments" class="nav-item-link" ng-class="{active: activePath === '/admin/payments'}">
+            <i class="fa-solid fa-credit-card"></i>
+            <span>Pembayaran</span>
+        </a>
+
+        <a href="#/admin/shipping" class="nav-item-link" ng-class="{active: activePath === '/admin/shipping'}">
+            <i class="fa-solid fa-box"></i>
+            <span>Pengiriman</span>
+        </a>
+
+        <a href="#/admin/customers" class="nav-item-link" ng-class="{active: activePath === '/admin/customers'}">
+            <i class="fa-solid fa-users"></i>
+            <span>Pelanggan</span>
+        </a>
+
+    </nav>
+
+    <!-- ================= PEMASARAN ================= -->
+    <div class="menu-label text-muted mt-4 mb-2 ps-2">PEMASARAN</div>
+    <nav class="nav flex-column">
+
+        <a href="#/admin/promos" class="nav-item-link" ng-class="{active: activePath === '/admin/promos'}">
+            <i class="fa-solid fa-tags"></i>
+            <span>Diskon & Promo</span>
+        </a>
+
+        <a href="#/admin/banners" class="nav-item-link" ng-class="{active: activePath === '/admin/banners'}">
+            <i class="fa-solid fa-images"></i>
+            <span>Banner Iklan</span>
+        </a>
+
+    </nav>
+
+    <!-- ================= LAPORAN ================= -->
+    <div class="menu-label text-muted mt-4 mb-2 ps-2">LAPORAN</div>
+    <nav class="nav flex-column">
+
+        <a href="#/admin/reports/sales" class="nav-item-link"
+            ng-class="{active: activePath === '/admin/reports/sales'}">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Laporan Penjualan</span>
+        </a>
+
+        <a href="#/admin/reports/stock" class="nav-item-link"
+            ng-class="{active: activePath === '/admin/reports/stock'}">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>Laporan Stok</span>
+        </a>
+
+    </nav>
+
+    <!-- ================= SISTEM ================= -->
+    <div class="menu-label text-muted mt-5 mb-2 ps-2">SISTEM</div>
+    <nav class="nav flex-column">
+
+        <a href="#/admin/settings" class="nav-item-link" ng-class="{active: activePath === '/admin/settings'}">
+            <i class="fa-solid fa-gear"></i>
+            <span>Pengaturan</span>
+        </a>
+
+        <a href="#" class="nav-item-link logout-btn text-danger">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Keluar</span>
+        </a>
+
+    </nav>
+
+</div>

@@ -1,0 +1,178 @@
+<div class="container py-3 py-md-5" ng-if="product">
+
+    <nav class="mb-3 mb-md-4">
+        <ol class="breadcrumb small text-uppercase" style="letter-spacing:1px;font-size:0.7rem;">
+            <li class="breadcrumb-item">
+                <a href="#" class="text-decoration-none text-muted">Beranda</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#" class="text-decoration-none text-muted">{{product.brand}}</a>
+            </li>
+            <li class="breadcrumb-item active text-dark fw-bold">
+                {{product.name}}
+            </li>
+        </ol>
+    </nav>
+
+    <div class="row g-4 g-md-5">
+
+        <div class="col-md-7">
+            <div class="bg-light rounded-3 p-3 p-md-4 d-flex align-items-center justify-content-center"
+                style="min-height:300px;max-height:500px;aspect-ratio:1/1;overflow:hidden;">
+
+                <img ng-if="product.image"
+                    ng-src="{{product.image}}"
+                    class="img-fluid"
+                    style="max-height:100%;max-width:100%;object-fit:contain;mix-blend-mode:multiply;">
+
+                <div ng-if="!product.image" class="text-muted small">
+                    NO IMAGE
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-5">
+
+            <h2 class="fw-bold text-uppercase mb-2"
+                style="font-size:calc(1.3rem + 0.5vw);letter-spacing:-0.5px;">
+                {{product.name}}
+            </h2>
+
+            <div class="mb-4">
+                <div class="text-muted small text-uppercase fw-semibold"
+                    style="font-size:0.65rem;letter-spacing:1px;">
+                    Harga
+                </div>
+
+                <div class="fs-5 fw-light">
+                    Rp {{product.price | number}}
+                </div>
+
+                <div class="mt-2 p-2 px-3 bg-light border-start border-dark border-3 d-inline-block">
+                    <div class="text-muted small text-uppercase"
+                        style="font-size:0.6rem;">
+                        Total
+                    </div>
+                    <div class="fw-bold fs-4">
+                        Rp {{product.price * qty | number}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="small fw-bold text-uppercase mb-2"
+                    style="font-size:0.75rem;letter-spacing:1px;">
+                    Pilih Warna
+                </label>
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <div ng-repeat="(color,count) in product.colorMap"
+                        ng-if="count>0"
+                        ng-click="selectColor(color)"
+                        ng-style="{
+                            'border': selectedColor===color ? '2px solid #000' : '1px solid #ddd'
+                        }"
+                        class="rounded-pill px-3 py-1 d-flex align-items-center gap-2"
+                        style="cursor:pointer;background:#fff;">
+
+                        <span style="width:10px;height:10px;border-radius:50%;"
+                            ng-style="{'background-color':getHexColor(color)}">
+                        </span>
+
+                        <span class="small text-uppercase"
+                            style="font-size:0.75rem;">
+                            {{color}}
+                        </span>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="small fw-bold text-uppercase mb-2"
+                    style="font-size:0.75rem;letter-spacing:1px;">
+                    Pilih Ukuran
+                </label>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button ng-repeat="size in product.sizes"
+                        ng-click="selectSize(size)"
+                        ng-class="{'btn-dark text-white':selectedSize==size}"
+                        class="btn btn-outline-dark rounded-1 shadow-none text-uppercase"
+                        style="width:60px;height:45px;font-size:0.8rem;">
+                        {{size}}
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="small fw-bold text-uppercase mb-2"
+                    style="font-size:0.75rem;letter-spacing:1px;">
+                    Jumlah
+                </label>
+
+                <div class="d-flex align-items-center border rounded"
+                    style="width:130px;overflow:hidden;">
+
+                    <button class="btn btn-light border-0"
+                        style="width:40px;"
+                        ng-click="decreaseQty()">
+                        -
+                    </button>
+
+                    <input type="text"
+                        class="form-control text-center border-0 shadow-none"
+                        ng-model="qty"
+                        readonly>
+
+                    <button class="btn btn-light border-0"
+                        style="width:40px;"
+                        ng-click="increaseQty()">
+                        +
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mb-4">
+
+                <button class="btn btn-dark flex-grow-1 py-3 fw-bold text-uppercase"
+                    ng-click="buyNow()">
+                    Pesan
+                </button>
+
+                <button class="btn border px-3"
+                    ng-click="likeProduct()"
+                    ng-class="{'btn-danger text-white':liked}">
+                    ❤ {{product.likes}}
+                </button>
+
+            </div>
+
+            <div class="mb-3">
+                <div class="small text-muted text-uppercase fw-bold"
+                    style="font-size:0.65rem;">
+                    Kategori
+                </div>
+                <div class="small text-uppercase fw-semibold">
+                    {{product.brand}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-5 pt-4 border-top">
+        <h5 class="fw-bold text-uppercase mb-3"
+            style="font-size:0.9rem;">
+            Deskripsi
+        </h5>
+        <div class="text-muted" style="font-size:0.9rem;">
+            {{product.description}}
+        </div>
+    </div>
+
+</div>

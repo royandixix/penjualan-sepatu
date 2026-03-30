@@ -1,0 +1,72 @@
+<div class="d-flex flex-column min-vh-100 bg-white">
+
+    <main class="flex-grow-1">
+        <div ng-view></div>
+    </main>
+
+    <div ng-include="'views/partials/user-footer.html'"></div>
+
+    <div class="position-fixed bottom-0 end-0 m-3 d-flex gap-2 p-2 bg-white shadow-sm rounded-pill border"
+        style="z-index:2000;">
+        
+        <button onclick="triggerTranslate('id')"
+            class="btn btn-link p-0 d-flex align-items-center border-0 text-decoration-none px-2 py-1">
+            <img src="https://flagcdn.com/w20/id.png" class="rounded-1 me-2" style="width:18px;">
+            <span class="fw-bold text-dark" style="font-size:10px;">ID</span>
+        </button>
+
+        <div class="border-start"></div>
+
+        <button onclick="triggerTranslate('en')"
+            class="btn btn-link p-0 d-flex align-items-center border-0 text-decoration-none px-2 py-1">
+            <img src="https://flagcdn.com/w20/us.png" class="rounded-1 me-2" style="width:18px;">
+            <span class="fw-bold text-dark" style="font-size:10px;">EN</span>
+        </button>
+
+    </div>
+
+</div>
+
+<style>
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+.nav-link {
+    position: relative;
+}
+
+@media(min-width:992px) {
+    .nav-link::after {
+        content:'';
+        position:absolute;
+        width:0;
+        height:2px;
+        bottom:0;
+        left:0;
+        background:#000;
+        transition:0.3s;
+    }
+
+    .nav-link:hover::after {
+        width:100%;
+    }
+}
+
+.offcanvas-body .list-group-item {
+    font-size:0.9rem;
+}
+
+.form-control:focus {
+    box-shadow:none;
+}
+
+.goog-te-banner-frame.skiptranslate {
+    display:none !important;
+}
+</style>

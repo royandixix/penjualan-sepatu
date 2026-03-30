@@ -1,0 +1,233 @@
+<div class="container-fluid px-4 py-4">
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <h4 class="fw-black text-dark mb-1" style="letter-spacing: -1px; text-transform: uppercase;">Daftar Pesanan
+            </h4>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">
+                    <li class="breadcrumb-item"><a href="#!/admin/dashboard"
+                            class="text-decoration-none text-muted">Dashboard</a></li>
+                    <li class="breadcrumb-item active text-primary fw-bold">Daftar Pesanan</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <button class="btn btn-outline-dark btn-sm rounded-0 me-2 px-3 fw-bold">
+                <i class="fa-solid fa-download me-2"></i>EXPORT
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== STAT CARDS ===== -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-primary border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase" style="font-size: 0.65rem;">Total
+                    Pesanan</small>
+                <h4 class="fw-black mb-0">{{ orders.length || 0 }}</h4>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-warning border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase"
+                    style="font-size: 0.65rem;">Diproses</small>
+                <h4 class="fw-black mb-0 text-warning">{{ countByStatus('Diproses') }}</h4>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-success border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase"
+                    style="font-size: 0.65rem;">Selesai</small>
+                <h4 class="fw-black mb-0 text-success">{{ countByStatus('Selesai') }}</h4>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 border-start border-danger border-4 shadow-sm rounded-0 p-3">
+                <small class="text-muted d-block mb-1 fw-bold text-uppercase"
+                    style="font-size: 0.65rem;">Dibatalkan</small>
+                <h4 class="fw-black mb-0 text-danger">{{ countByStatus('Dibatalkan') }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FILTER BAR ===== -->
+    <div class="card border-0 shadow-sm rounded-0 mb-0 border-bottom">
+        <div class="card-body py-3">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group input-group-sm border rounded-0 px-2 py-1" style="background: #ffffff;">
+                        <span class="input-group-text bg-transparent border-0 text-muted">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" ng-model="searchOrder"
+                            class="form-control bg-transparent border-0 shadow-none"
+                            placeholder="Cari nama pelanggan atau pesanan...">
+                    </div>
+                </div>
+                <div class="col-md-8 text-md-end">
+                    <div class="d-flex justify-content-md-end gap-2">
+                        <select class="form-select form-select-sm w-auto rounded-0 border-dark shadow-none fw-bold"
+                            ng-model="filterStatus" style="font-size: 0.75rem;">
+                            <option value="">SEMUA STATUS</option>
+                            <option value="Diproses">DIPROSES</option>
+                            <option value="Selesai">SELESAI</option>
+                            <option value="Dibatalkan">DIBATALKAN</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABLE ===== -->
+    <div class="card border-0 shadow-sm rounded-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="background: #f8fafc;">
+                    <tr
+                        style="font-size: 0.7rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #0f172a;">
+                        <th class="ps-4 py-3 border-0">No Pesanan</th>
+                        <th class="py-3 border-0">Pelanggan</th>
+                        <th class="py-3 border-0">Total</th>
+                        <th class="py-3 border-0">Status</th>
+                        <th class="py-3 border-0">Tanggal</th>
+                        <th class="text-end pe-4 py-3 border-0">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: 0.85rem; border-top: 0 !important;">
+
+                    <!-- EMPTY STATE -->
+                    <tr ng-if="!orders || (orders | filter:searchOrder | filter:{status: filterStatus}).length === 0">
+                        <td colspan="6" class="text-center py-5">
+                            <i class="fa-solid fa-folder-open fa-3x mb-3 text-muted opacity-20"></i>
+                            <p class="text-muted fw-bold mb-0">DATA TIDAK DITEMUKAN</p>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="order in orders | filter:searchOrder | filter:{status: filterStatus} track by order.id"
+                        class="order-row">
+
+                        <!-- NO PESANAN -->
+                        <td class="ps-4 py-3">
+                            <span class="fw-black text-primary" style="font-size: 0.8rem;">{{ order.id }}</span>
+                        </td>
+
+                        <!-- PELANGGAN -->
+                        <td class="py-3">
+                            <div class="fw-black text-dark text-uppercase" style="font-size: 0.8rem;">{{ order.customer
+                                }}</div>
+                            <small class="text-muted" style="font-size: 0.7rem;">{{ order.email }}</small>
+                        </td>
+
+                        <!-- TOTAL -->
+                        <td class="py-3">
+                            <span class="fw-black text-dark">{{ order.total | currency:'Rp ':0 }}</span>
+                        </td>
+
+                        <!-- STATUS -->
+                        <td class="py-3">
+                            <span class="status-badge status-diproses"
+                                ng-if="order.status == 'Diproses'">DIPROSES</span>
+                            <span class="status-badge status-selesai" ng-if="order.status == 'Selesai'">SELESAI</span>
+                            <span class="status-badge status-batal"
+                                ng-if="order.status == 'Dibatalkan'">DIBATALKAN</span>
+                        </td>
+
+                        <!-- TANGGAL -->
+                        <td class="py-3">
+                            <span class="text-muted" style="font-size: 0.78rem;">{{ order.date }}</span>
+                        </td>
+
+                        <!-- AKSI -->
+                        <td class="text-end pe-4 py-3">
+                            <div class="btn-group shadow-sm">
+
+                                <!-- LIHAT DETAIL ORDER -->
+                                <a href="#/admin/orders/{{order.id}}" class="btn btn-white btn-sm rounded-0 border">
+                                    <i class="fa-solid fa-eye text-primary"></i>
+                                </a>
+
+                                <!-- UPDATE STATUS -->
+                                <button class="btn btn-white btn-sm rounded-0 border" ng-click="updateStatus(order)">
+                                    <i class="fa-solid fa-truck text-success"></i>
+                                </button>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fw-black {
+        font-weight: 800;
+    }
+
+    .order-row {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .order-row:hover {
+        background-color: #f8fafc !important;
+        transform: scale(1.002);
+        box-shadow: inset 4px 0 0 #0f172a;
+    }
+
+    .btn-white {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        transition: 0.2s;
+    }
+
+    .btn-white:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    /* Status badge sharp style */
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        border-radius: 0;
+        text-transform: uppercase;
+    }
+
+    .status-diproses {
+        background: #fef9c3;
+        color: #854d0e;
+        border: 1px solid #fde047;
+    }
+
+    .status-selesai {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+    }
+
+    .status-batal {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+    }
+
+    .form-control:focus {
+        border-color: #0f172a !important;
+        background: #fff !important;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+    }
+</style>
