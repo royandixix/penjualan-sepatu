@@ -1,24 +1,62 @@
 app.controller("HeaderController", function ($scope, $rootScope, $location) {
-
-  // Ambil user dari rootScope (sinkron dengan app.run)
   $scope.currentUser = $rootScope.currentUser;
 
-  // Watch biar auto update kalau login/logout
-  $scope.$watch(function () {
-    return $rootScope.currentUser;
-  }, function (newVal) {
-    $scope.currentUser = newVal;
-  });
+  function getCart() {
+    try {
+      return JSON.parse(localStorage.getItem("cart")) || [];
+    } catch (e) {
+      return [];
+    }
+  }
 
-  // Logout function
+  function getWishlist() {
+    try {
+      return JSON.parse(localStorage.getItem("wishlist")) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function updateCounts() {
+    $scope.cartCount = getCart().length;
+    $scope.wishlistCount = getWishlist().length;
+  }
+
+  updateCounts();
+
+  $scope.$watch(
+    function () {
+      return $rootScope.currentUser;
+    },
+    function (n) {
+      $scope.currentUser = n;
+    },
+  );
+
+  $scope.$watch(
+    function () {
+      return localStorage.getItem("cart");
+    },
+    function () {
+      updateCounts();
+    },
+  );
+
+  $scope.$watch(
+    function () {
+      return localStorage.getItem("wishlist");
+    },
+    function () {
+      updateCounts();
+    },
+  );
+
   $scope.logout = function () {
     localStorage.removeItem("authUser");
     localStorage.removeItem("token");
-
     $rootScope.currentUser = null;
-
+    updateCounts();
     alert("Logout berhasil!");
     $location.path("/shop");
   };
-
 });

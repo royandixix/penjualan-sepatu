@@ -1,0 +1,13 @@
+.fly-clone {
+  pointer-events: none;
+  will-change: transform, opacity, top, left;
+  transform-origin: center center; /* Hapus border-radius agar kotak */
+  border-radius: 0 !important; /* Paksa ukuran kecil di sini agar tidak raksasa */
+  width: 300px !important;
+  height: 300px !important;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  z-index: 9999;
+  transition: all 0.8s cubic-bezier(0.42, 0, 0.58, 1);
+}

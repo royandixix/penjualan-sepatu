@@ -1,133 +1,167 @@
-<div class="container py-4 py-md-5" style="max-width: 1100px;">
-    <div class="d-flex align-items-end justify-content-between mb-4 pb-2 border-bottom">
-        <h3 class="fw-bold m-0" style="letter-spacing: -1.5px; font-size: 2rem;">Keranjang Belanja</h3>
-        <span class="text-muted small text-uppercase fw-semibold" style="letter-spacing: 1px;">{{cart.length}}
-            Items</span>
+<div class="container py-4 py-md-5" style="max-width: 1150px; min-height: 80vh;">
+    <div class="d-flex align-items-end justify-content-between mb-5 pb-3 border-bottom border-dark border-opacity-10">
+        <div>
+            <nav aria-label="breadcrumb" class="mb-1 d-none d-md-block">
+                <ol class="breadcrumb mb-0" style="font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Home</a></li>
+                    <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">Cart</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold m-0" style="letter-spacing: -1.5px; font-size: 2.2rem;">Keranjang Belanja</h3>
+        </div>
+        <span class="text-muted small text-uppercase fw-bold" style="letter-spacing: 1.5px; font-size: 0.7rem;">{{cart.length}} Items</span>
     </div>
 
-    <div ng-if="cart.length==0" class="text-center py-5">
-        <p class="text-muted mb-4">Keranjang Anda saat ini kosong.</p>
-        <a href="/" class="btn btn-dark rounded-0 px-4 py-2 text-uppercase fw-bold" style="font-size: 0.75rem;">Mulai
-            Belanja</a>
+    <div ng-if="cart.length==0" class="text-center py-5 my-5">
+        <div class="mb-4">
+            <i class="fa-solid fa-cart-shopping opacity-10" style="font-size: 5rem;"></i>
+        </div>
+        <h5 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">Keranjang Kosong</h5>
+        <p class="text-muted mb-4 mx-auto" style="max-width: 300px; font-size: 0.9rem;">Sepertinya Anda belum memilih sepatu impian. Yuk, mulai jelajahi koleksi kami!</p>
+        <a href="/" class="btn btn-dark rounded-0 px-5 py-3 text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 2px;">Mulai Belanja</a>
     </div>
 
-    <div ng-if="cart.length>0" class="row g-0">
-
-        <div class="col-lg-7">
+    <div ng-if="cart.length>0" class="row g-0 align-items-start"> <div class="col-lg-7">
             <div class="pe-lg-5">
                 <div class="d-flex align-items-center gap-2 mb-4">
-                    <div class="bg-dark rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 20px; height: 20px;">
-                        <i class="fa-solid fa-location-dot text-white" style="font-size: 0.6rem;"></i>
+                    <div class="bg-success rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 18px; height: 18px;">
+                        <i class="fa-solid fa-location-dot text-white" style="font-size: 0.55rem;"></i>
                     </div>
-                    <span class="small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">Store
-                        Bandung</span>
+                    <span class="small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 1.2px; color: #333;">Store Bandung</span>
                 </div>
 
                 <div class="product-items">
-                    <div class="d-flex gap-4 py-4 border-top align-items-center" ng-repeat="item in cart">
-                        <div class="bg-light p-2 d-flex align-items-center justify-content-center"
-                            style="width: 120px; height: 120px; flex-shrink: 0;">
+                    <div class="d-flex gap-4 py-4 border-top align-items-center position-relative product-card-cart" ng-repeat="item in cart">
+                        <div class="bg-light d-flex align-items-center justify-content-center overflow-hidden border border-light"
+                            style="width: 140px; height: 140px; flex-shrink: 0; transition: all 0.3s ease;">
                             <img ng-src="{{item.image}}" class="img-fluid"
-                                style="mix-blend-mode: multiply; filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.05));">
+                                style="mix-blend-mode: multiply; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.08)); transform: scale(1.1);">
                         </div>
 
                         <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="fw-bold mb-1 text-uppercase"
-                                    style="font-size: 0.9rem; letter-spacing: 0.5px;">{{item.name}}</h6>
-                                <button class="btn btn-link text-dark p-0 opacity-50 hover-opacity-100"
-                                    ng-click="removeItem($index)">
-                                    <i class="fa-solid fa-xmark"></i>
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-uppercase text-truncate"
+                                        style="font-size: 0.95rem; letter-spacing: 0.5px; max-width: 250px;">{{item.name}}</h6>
+                                    <p class="text-muted mb-0" style="font-size: 0.75rem; letter-spacing: 0.5px;">{{item.brand}}</p>
+                                </div>
+                                <button class="btn btn-link text-dark p-0 opacity-25 hover-opacity-100 transition-all"
+                                    ng-click="removeItem($index)" title="Hapus Produk">
+                                    <i class="fa-solid fa-trash-can shadow-none" style="font-size: 0.9rem;"></i>
                                 </button>
                             </div>
-                            <p class="text-muted mb-2" style="font-size: 0.8rem;">{{item.brand}} • <span
-                                    class="text-dark fw-medium">IDR {{item.price|number}}</span></p>
+                            
+                            <div class="mt-2 fw-bold" style="font-size: 0.85rem; color: #111;">IDR {{item.price|number}}</div>
 
-                            <div class="d-flex align-items-center justify-content-between mt-3">
-                                <div class="d-flex align-items-center border">
-
-                                    <button class="btn btn-sm btn-link text-dark text-decoration-none px-2"
-                                        ng-click="changeQty(item,-1)">
-                                        -
-                                    </button>
-
+                            <div class="d-flex align-items-center justify-content-between mt-4">
+                                <div class="d-flex align-items-center border border-dark border-opacity-10 rounded-1 bg-white shadow-sm">
+                                    <button class="btn btn-sm px-3 border-0 text-dark"
+                                        ng-click="changeQty(item,-1)" style="font-size: 1rem; line-height: 1;">-</button>
                                     <input type="number"
-                                        class="form-control form-control-sm border-0 text-center bg-transparent fw-bold"
+                                        class="form-control form-control-sm border-0 text-center bg-transparent fw-bold p-0 shadow-none"
                                         ng-model="item.qty" ng-change="updateCart()"
-                                        style="width: 40px; font-size: 0.8rem; box-shadow: none;">
-
-                                    <button class="btn btn-sm btn-link text-dark text-decoration-none px-2"
-                                        ng-click="changeQty(item,1)">
-                                        +
-                                    </button>
-
+                                        style="width: 35px; font-size: 0.85rem; -moz-appearance: textfield;">
+                                    <button class="btn btn-sm px-3 border-0 text-dark"
+                                        ng-click="changeQty(item,1)" style="font-size: 1rem; line-height: 1;">+</button>
                                 </div>
-                                <span class="fw-bold" style="font-size: 0.9rem;">IDR
-                                    {{item.price*item.qty|number}}</span>
+                                <div class="text-end">
+                                    <span class="text-muted d-block small mb-1" style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;">Subtotal</span>
+                                    <span class="fw-bold text-dark" style="font-size: 1.1rem;">IDR {{item.price*item.qty|number}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="border-top"></div>
+                    <div class="border-top border-dark border-opacity-10"></div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-5 mt-5 mt-lg-0">
-            <div class="bg-light p-4 p-md-5" style="border-radius: 2px;">
-                <h6 class="fw-bold mb-4 text-uppercase" style="font-size: 0.8rem; letter-spacing: 2px;">Ringkasan
-                    Pesanan</h6>
+        <div class="col-lg-5 mt-5 mt-lg-0 sticky-top" style="top: 100px; z-index: 10;">
+            <div class="bg-white p-4 p-md-5 border" style="border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
+                <h6 class="fw-bold mb-4 text-uppercase border-bottom pb-3" style="font-size: 0.85rem; letter-spacing: 2px;">Ringkasan Pesanan</h6>
 
                 <div class="mb-4">
-                    <div class="d-flex border-bottom border-dark pb-2">
-                        <input type="text" class="form-control border-0 bg-transparent shadow-none p-0"
-                            placeholder="Kode Voucher" style="font-size: 0.85rem;">
+                    <label class="small text-muted fw-bold text-uppercase mb-2 d-block" style="font-size: 0.65rem; letter-spacing: 1px;">Promo Code</label>
+                    <div class="d-flex border-bottom border-dark border-opacity-25 pb-2 transition-all group-hover-dark">
+                        <input type="text" class="form-control border-0 bg-transparent shadow-none p-0 fw-medium"
+                            placeholder="Masukkan kode voucher" style="font-size: 0.85rem;">
                         <button class="btn btn-link text-dark fw-bold text-uppercase p-0 text-decoration-none"
-                            style="font-size: 0.75rem;">Apply</button>
+                            style="font-size: 0.75rem; letter-spacing: 1px;">Apply</button>
                     </div>
                 </div>
 
-                <div class="small mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Subtotal Produk</span>
-                    <span class="fw-medium">IDR {{getTotal()|number}}</span>
-                </div>
-                <div class="small mb-2 d-flex justify-content-between">
-                    <span class="text-muted">Estimasi Berat</span>
-                    <span class="fw-medium">2.0 kg</span>
-                </div>
-                <div class="small mb-4 d-flex justify-content-between">
-                    <span class="text-muted">Jumlah Barang</span>
-                    <span class="fw-medium">{{cart.length}} Pcs</span>
+                <div class="py-3">
+                    <div class="small mb-3 d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Subtotal Produk</span>
+                        <span class="fw-bold">IDR {{getTotal()|number}}</span>
+                    </div>
+                    <div class="small mb-3 d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Estimasi Berat</span>
+                        <span class="text-dark fw-medium">2.0 kg</span>
+                    </div>
+                    <div class="small mb-2 d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Jumlah Barang</span>
+                        <span class="text-dark fw-medium">{{cart.length}} Pcs</span>
+                    </div>
                 </div>
 
-                <div
-                    class="pt-4 border-top border-dark border-2 d-flex justify-content-between align-items-center mb-5">
-                    <span class="fw-bold text-uppercase" style="letter-spacing: 1px;">Total</span>
-                    <span class="fw-bold fs-4">IDR {{getTotal()|number}}</span>
+                <div class="pt-4 mt-2 border-top border-dark border-2 d-flex justify-content-between align-items-center mb-5">
+                    <span class="fw-bold text-uppercase" style="letter-spacing: 1.5px; font-size: 0.9rem;">Grand Total</span>
+                    <span class="fw-bold fs-3 text-dark" style="letter-spacing: -1px;">IDR {{getTotal()|number}}</span>
                 </div>
 
                 <div class="d-grid gap-3">
-                    <button
-                        class="btn btn-dark rounded-0 py-3 fw-bold text-uppercase d-flex justify-content-between align-items-center px-4"
-                        style="letter-spacing: 1px; font-size: 0.85rem; background-color: #111;"
+                    <button class="btn btn-dark rounded-1 py-3 fw-bold text-uppercase d-flex justify-content-between align-items-center px-4 btn-checkout-hover"
+                        style="letter-spacing: 1.5px; font-size: 0.85rem; background-color: #000; border: none;"
                         ng-click="checkoutCart()">
                         <span>Checkout Sekarang</span>
                         <i class="fa-solid fa-arrow-right-long"></i>
                     </button>
-
-                    <button class="btn btn-outline-dark rounded-0 py-2 fw-bold text-uppercase border-opacity-25"
-                        style="font-size: 0.7rem; letter-spacing: 1px;">
+                    <button class="btn btn-outline-dark rounded-1 py-3 fw-bold text-uppercase border-opacity-25 shadow-none"
+                        style="font-size: 0.7rem; letter-spacing: 1.5px;">
                         Lanjut Belanja
                     </button>
                 </div>
 
-                <div class="mt-4 text-center">
-                    <p class="text-muted" style="font-size: 0.7rem; letter-spacing: 0.5px;">
-                        <i class="fa-solid fa-shield-halved me-1"></i> Keamanan transaksi terjamin oleh sistem kami.
+                <div class="mt-5 text-center">
+                    <div class="d-flex align-items-center justify-content-center gap-3 opacity-50 mb-3">
+                        <i class="fa-brands fa-cc-visa fs-4"></i>
+                        <i class="fa-brands fa-cc-mastercard fs-4"></i>
+                        <i class="fa-solid fa-building-columns fs-5"></i>
+                    </div>
+                    <p class="text-muted mb-0" style="font-size: 0.65rem; letter-spacing: 0.5px; line-height: 1.5;">
+                        <i class="fa-solid fa-shield-halved me-1 text-success"></i> 
+                        Pembayaran dienkripsi secara aman & terpercaya.<br>Sesuai standar keamanan data global.
                     </p>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+<style>
+    /* CSS Support */
+    .hover-opacity-100:hover { opacity: 1 !important; transform: scale(1.1); }
+    .transition-all { transition: all 0.3s ease; }
+    
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+
+    .btn-checkout-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        background-color: #222 !important;
+    }
+
+    /* Pastikan sticky tidak 'lompat' saat scroll */
+    @media (max-width: 991px) {
+        .sticky-top {
+            position: relative !important;
+            top: 0 !important;
+        }
+    }
+</style>

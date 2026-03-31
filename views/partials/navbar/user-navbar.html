@@ -40,34 +40,70 @@
     </div>
 </nav>
 
-<div class="offcanvas offcanvas-start border-0" tabindex="-1" id="sidebarMobile">
-    <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold">MENU</h5>
-        <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas"></button>
+<div class="offcanvas offcanvas-start border-0" tabindex="-1" id="sidebarMobile" style="width: 280px;">
+    <div class="offcanvas-header justify-content-center py-4">
+        <img src="https://807garage.com/assets/img/logo.png" alt="Logo" style="height: 40px; filter: grayscale(1);">
     </div>
+    
     <div class="offcanvas-body p-0">
-        <ul class="list-unstyled mb-0">
-            <li><a class="nav-link p-3 border-bottom text-dark fw-semibold" href="#!/shop">Semua Produk</a></li>
-            <li><a class="nav-link p-3 border-bottom text-dark fw-semibold" ng-click="go('/produk-populer')">Produk Populer</a></li>
-            <li><a class="nav-link p-3 border-bottom text-danger fw-bold" href="#!/sale">Cuci Gudang</a></li>
-            <li class="border-bottom">
-                <a class="nav-link p-3 text-dark fw-semibold d-flex justify-content-between align-items-center" 
-                   data-bs-toggle="collapse" href="#kategoriMobile" role="button">
-                    Kategori <i class="bi bi-chevron-down small"></i>
+        <div class="list-group list-group-flush">
+            <a href="#!/shop" class="list-group-item list-group-item-action border-0 py-3 px-4 d-flex align-items-center fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                <i class="bi bi-gear-wide-connected text-success me-3"></i> Semua Produk
+            </a>
+            <a ng-click="go('/produk-populer')" class="list-group-item list-group-item-action border-0 py-3 px-4 d-flex align-items-center fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                <i class="bi bi-gear-wide-connected text-success me-3"></i> Produk Populer
+            </a>
+            <a href="#!/sale" class="list-group-item list-group-item-action border-0 py-3 px-4 d-flex align-items-center fw-bold text-uppercase text-dark   " style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                <i class="bi bi-gear-wide-connected text-success me-3"></i> Cuci Gudang
+            </a>
+            
+            <div class="border-0">
+                <a class="list-group-item list-group-item-action border-0 py-3 px-4 d-flex align-items-center justify-content-between fw-bold text-uppercase" 
+                   data-bs-toggle="collapse" href="#collapseKategori" role="button" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                    <span class="d-flex align-items-center">
+                        <i class="bi bi-gear-wide-connected text-success me-3"></i> Kategori
+                    </span>
+                    <i class="bi bi-chevron-right small"></i>
                 </a>
-                <div class="collapse bg-light" id="kategoriMobile">
-                    <ul class="list-unstyled">
-                        <li><a class="nav-link ps-4 py-2 border-bottom" href="#!/category/men-sneakers">Sneakers Laki-laki</a></li>
-                        <li><a class="nav-link ps-4 py-2 border-bottom" href="#!/category/men-running">Sepatu Lari Laki-laki</a></li>
-                        <li><a class="nav-link ps-4 py-2 border-bottom" href="#!/category/women-sneakers">Sneakers Perempuan</a></li>
-                        <li><a class="nav-link ps-4 py-2" href="#!/category/women-running">Sepatu Lari Perempuan</a></li>
-                    </ul>
+                <div class="collapse" id="collapseKategori">
+                    <div class="bg-light py-2">
+                        <a href="#!/category/men-sneakers" class="nav-link ps-5 py-2 text-dark" style="font-size: 0.85rem;">Sneakers Laki-laki</a>
+                        <a href="#!/category/men-running" class="nav-link ps-5 py-2 text-dark" style="font-size: 0.85rem;">Sepatu Lari Laki-laki</a>
+                        <a href="#!/category/women-sneakers" class="nav-link ps-5 py-2 text-dark" style="font-size: 0.85rem;">Sneakers Perempuan</a>
+                        <a href="#!/category/women-running" class="nav-link ps-5 py-2 text-dark" style="font-size: 0.85rem;">Sepatu Lari Perempuan</a>
+                    </div>
                 </div>
-            </li>
-            <li><a class="nav-link p-3 text-dark fw-semibold" href="#!/more">Lainnya</a></li>
-        </ul>
+            </div>
+
+            <a href="#!/more" class="list-group-item list-group-item-action border-0 py-3 px-4 d-flex align-items-center justify-content-between fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                <span class="d-flex align-items-center">
+                    <i class="bi bi-gear-wide-connected text-success me-3"></i> Lainnya
+                </span>
+                <i class="bi bi-chevron-right small"></i>
+            </a>
+        </div>
+
+        <div class="mt-5 pt-4 border-top">
+            <a href="#!/cart" class="list-group-item list-group-item-action border-0 py-2 px-4 d-flex align-items-center justify-content-between text-muted" style="font-size: 0.8rem;">
+                <span><i class="bi bi-cart3 me-2"></i> Keranjang Belanja</span>
+                <i class="bi bi-chevron-right x-small"></i>
+            </a>
+            <a href="#!/wishlist" class="list-group-item list-group-item-action border-0 py-2 px-4 d-flex align-items-center justify-content-between text-muted" style="font-size: 0.8rem;">
+                <span><i class="bi bi-heart me-2"></i> My Wishlist</span>
+                <i class="bi bi-chevron-right x-small"></i>
+            </a>
+            <a href="#!/notifikasi" class="list-group-item list-group-item-action border-0 py-2 px-4 d-flex align-items-center justify-content-between text-muted" style="font-size: 0.8rem;">
+                <span><i class="bi bi-bell me-2"></i> Notifikasi</span>
+                <i class="bi bi-chevron-right x-small"></i>
+            </a>
+            
+            <div class="px-4 py-4">
+                <a href="#!/login" class="btn btn-outline-dark w-100 rounded-1 fw-bold py-2" style="font-size: 0.8rem;">Login</a>
+            </div>
+        </div>
     </div>
 </div>
+
 <style>
     .nav-custom {
         font-size: 0.75rem;
@@ -136,11 +172,15 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .offcanvas .nav-link {
-        font-size: 0.9rem;
+    .bi-gear-wide-connected {
+        font-size: 1.1rem;
     }
 
-    .offcanvas .nav-link:active {
-        background-color: #eeeeee;
+    .x-small {
+        font-size: 0.65rem;
+    }
+
+    #sidebarMobile {
+        box-shadow: 10px 0 30px rgba(0,0,0,0.05);
     }
 </style>

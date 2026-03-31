@@ -1,6 +1,8 @@
-angular.module("sepatuStore").controller("CheckoutController", function ($scope, $http, $routeParams, $location) {
+var app = angular.module("sepatuStore");
 
-  const API_URL = "http://localhost:3000";
+app.controller("CheckoutController", function ($scope, $http, $routeParams, $location) {
+
+  var API_URL = "http://localhost:3000";
 
   $scope.product = null;
   $scope.selectedSize = null;
@@ -8,7 +10,7 @@ angular.module("sepatuStore").controller("CheckoutController", function ($scope,
   $scope.qty = 1;
   $scope.liked = false;
 
-  const COLOR_MAP = {
+  var COLOR_MAP = {
     Black:"#000000",White:"#ffffff",Grey:"#808080",Silver:"#C0C0C0",
     Red:"#ee1c25",Maroon:"#800000",Orange:"#ff7f27",Yellow:"#fff200",
     Beige:"#f5f5dc",Green:"#22b14c","Dark Green":"#004000",
@@ -17,53 +19,88 @@ angular.module("sepatuStore").controller("CheckoutController", function ($scope,
     Brown:"#880015",Tan:"#d2b48c",Gold:"#ffca18"
   };
 
-  $scope.getHexColor = name => COLOR_MAP[name] || "#ddd";
+  $scope.getHexColor = function(name){
+    return COLOR_MAP[name] || "#ddd";
+  };
 
-  $scope.increaseQty = () => $scope.qty++;
-  $scope.decreaseQty = () => { if ($scope.qty > 1) $scope.qty--; };
+  $scope.increaseQty = function(){
+    $scope.qty++;
+  };
 
-  $scope.selectSize = size => $scope.selectedSize = size;
+  $scope.decreaseQty = function(){
+    if($scope.qty > 1){
+      $scope.qty--;
+    }
+  };
 
-  $scope.selectColor = color => {
-    $scope.selectedColor = ($scope.selectedColor === color ? null : color);
+  $scope.selectSize = function(size){
+    $scope.selectedSize = size;
+  };
+
+  $scope.selectColor = function(color){
+    if($scope.selectedColor === color){
+      $scope.selectedColor = null;
+    } else {
+      $scope.selectedColor = color;
+    }
   };
 
   function normalizeImage(p){
     if(p.image && !p.image.startsWith("http")){
-      if(p.image.startsWith("/")) p.image = p.image.substring(1);
+      if(p.image.startsWith("/")){
+        p.image = p.image.substring(1);
+      }
       p.image = API_URL + "/" + p.image;
     }
   }
 
   function normalizeSizes(p){
-    try { p.sizes = JSON.parse(p.sizes || "[]"); }
-    catch(e){ p.sizes = []; }
-    if(!p.sizes.length) p.sizes = [38,39,40,41,42];
+    try {
+      if(typeof p.sizes === "string"){
+        p.sizes = JSON.parse(p.sizes);
+      }
+    } catch(e){
+      p.sizes = [];
+    }
+
+    if(!Array.isArray(p.sizes) || !p.sizes.length){
+      p.sizes = [38,39,40,41,42];
+    }
   }
 
   function normalizeColors(p){
-    let map = {};
-    if(p.colors){
-      let data;
-      try {
-        data = typeof p.colors === "string" ? JSON.parse(p.colors) : p.colors;
-      } catch(e){ data = []; }
+    var map = {};
 
-      if(Array.isArray(data)){
-        data.forEach(c => map[c] = (map[c] || 0) + 1);
-      } else {
-        map = data || {};
+    try {
+      var data = typeof p.colors === "string" ? JSON.parse(p.colors) : p.colors;
+
+      if(Array.isArray(data) && data.length){
+        data.forEach(function(c){
+          map[c] = 1;
+        });
+      } else if(typeof data === "object" && data !== null){
+        map = data;
       }
+    } catch(e){
+      map = {};
     }
+
+    if(Object.keys(map).length === 0){
+      map = {
+        Black:1,
+        White:1
+      };
+    }
+
     p.colorMap = map;
   }
 
   function loadProduct(){
-    const id = $routeParams.id;
+    var id = $routeParams.id;
 
     $http.get(API_URL + "/api/products/" + id)
-      .then(res => {
-        let p = res.data;
+      .then(function(res){
+        var p = res.data;
 
         p.likes = p.likes || 0;
 
@@ -73,7 +110,9 @@ angular.module("sepatuStore").controller("CheckoutController", function ($scope,
 
         $scope.product = p;
       })
-      .catch(() => alert("Gagal memuat produk"));
+      .catch(function(){
+        alert("Gagal memuat produk");
+      });
   }
 
   function validateOrder(){
@@ -84,18 +123,22 @@ angular.module("sepatuStore").controller("CheckoutController", function ($scope,
     return null;
   }
 
-  $scope.buyNow = function () {
-    const user = JSON.parse(localStorage.getItem("authUser"));
+  $scope.buyNow = function(){
+    var user = JSON.parse(localStorage.getItem("authUser"));
+
     if(!user){
       alert("Silakan login terlebih dahulu!");
       $location.path("/login");
       return;
     }
 
-    const error = validateOrder();
-    if(error){ alert(error); return; }
+    var error = validateOrder();
+    if(error){
+      alert(error);
+      return;
+    }
 
-    const order = {
+    var order = {
       id: "ORD-" + Date.now(),
       user_name: user.name,
       user_email: user.email,
@@ -111,20 +154,25 @@ angular.module("sepatuStore").controller("CheckoutController", function ($scope,
     };
 
     $http.post(API_URL + "/api/orders", order)
-      .then(() => {
+      .then(function(){
         alert("Pesanan berhasil!");
         $location.path("/shop");
       })
-      .catch(() => alert("Gagal menyimpan pesanan"));
+      .catch(function(){
+        alert("Gagal menyimpan pesanan");
+      });
   };
 
-  $scope.likeProduct = function () {
+  $scope.likeProduct = function(){
     if(!$scope.product) return;
 
     $scope.liked = !$scope.liked;
 
     $scope.product.likes += $scope.liked ? 1 : -1;
-    if($scope.product.likes < 0) $scope.product.likes = 0;
+
+    if($scope.product.likes < 0){
+      $scope.product.likes = 0;
+    }
 
     $http.put(API_URL + "/api/products/" + $scope.product.id, $scope.product);
   };
