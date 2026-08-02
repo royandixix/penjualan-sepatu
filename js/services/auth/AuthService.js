@@ -1,41 +1,33 @@
-angular.module('sepatuStore').service('AuthService', function($http, $location) {
+angular.module('sepatuStore')
+.service('AuthService', function($http, $location) {
 
     const API_URL = "http://localhost:3000/api";
 
-    // ================= LOGIN =================
     this.login = function(data) {
-        return $http({
-            method: 'POST',
-            url: API_URL + "/login",
-            data: data,
-            headers: { 'Content-Type': 'application/json' }
-        }).then(function(res) {
-            if (res.data && res.data.user && res.data.token) {
-                localStorage.setItem("authUser", JSON.stringify(res.data.user));
+        return $http.post(API_URL + "/login", data)
+        .then(function(res) {
+
+            if (res.data && res.data.token) {
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("authUser", JSON.stringify(res.data.user));
             }
+
             return res;
         });
     };
 
     this.register = function(data) {
-        return $http({
-            method: 'POST',
-            url: API_URL + "/register",
-            data: data,
-            headers: { 'Content-Type': 'application/json' }
-        }).then(function(res) {
-            // Opsional: simpan user langsung setelah register
-            // localStorage.setItem("authUser", JSON.stringify(res.data.user));
-            // localStorage.setItem("token", res.data.token);
-            return res;
-        });
+        return $http.post(API_URL + "/register", data);
     };
 
     this.logout = function() {
         localStorage.removeItem("authUser");
         localStorage.removeItem("token");
-        $location.path('/admin/login');
+        $location.path('/login');
+    };
+
+    this.getToken = function() {
+        return localStorage.getItem("token");
     };
 
     this.getCurrentUser = function() {
@@ -47,7 +39,7 @@ angular.module('sepatuStore').service('AuthService', function($http, $location) 
     };
 
     this.isLoggedIn = function() {
-        return !!localStorage.getItem("authUser");
+        return !!this.getToken();
     };
 
 });

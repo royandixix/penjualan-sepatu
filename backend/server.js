@@ -21,6 +21,7 @@ const ordersFile = path.join(dataDir, "orders.json");
 
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 
+// =================== MULTER CONFIG ===================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = path.join(__dirname, "assets/images/products");
@@ -33,6 +34,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// =================== HELPER FUNCTIONS ===================
 function readProducts() {
   if (!fs.existsSync(productsFile)) return [];
   return JSON.parse(fs.readFileSync(productsFile, "utf8") || "[]");
@@ -60,7 +62,7 @@ function writeOrders(data) {
   fs.writeFileSync(ordersFile, JSON.stringify(data, null, 2));
 }
 
-/* ================= NORMALIZER ================= */
+// =================== NORMALIZER ===================
 function normalizeProduct(data) {
   return {
     ...data,
@@ -75,12 +77,12 @@ function normalizeProduct(data) {
         : data.colors || [],
     sizes:
       typeof data.sizes === "string"
-        ? data.sizes
-        : JSON.stringify(data.sizes || []),
+        ? JSON.parse(data.sizes || "[]")
+        : data.sizes || [],
   };
 }
 
-/* ================= PRODUCTS ================= */
+// =================== PRODUCTS ===================
 app.get("/api/products", (req, res) => {
   const products = readProducts().map((p) => {
     let product = { ...p };
@@ -92,30 +94,21 @@ app.get("/api/products", (req, res) => {
 });
 
 app.get("/api/products/:id", (req, res) => {
-  const products = readProducts();
-  const product = products.find((p) => p.id == req.params.id);
-  if (!product)
-    return res.status(404).json({ message: "Produk tidak ditemukan" });
-  let result = { ...product };
-  if (result.image && !result.image.startsWith("http"))
-    result.image = `http://localhost:${PORT}/` + result.image;
-  res.json(result);
+  const product = readProducts().find((p) => p.id == req.params.id);
+  if (!product) return res.status(404).json({ message: "Produk tidak ditemukan" });
+  if (product.image && !product.image.startsWith("http"))
+    product.image = `http://localhost:${PORT}/` + product.image;
+  res.json(product);
 });
 
 app.post("/api/products", upload.single("image"), (req, res) => {
   try {
     const products = readProducts();
     let data = normalizeProduct(req.body);
-
     data.id = Date.now().toString();
-
-    if (req.file) {
-      data.image = "assets/images/products/" + req.file.filename;
-    }
-
+    if (req.file) data.image = "assets/images/products/" + req.file.filename;
     products.push(data);
     writeProducts(products);
-
     res.json({ message: "Produk berhasil ditambahkan", data });
   } catch (err) {
     console.error(err);
@@ -127,22 +120,13 @@ app.put("/api/products/:id", upload.single("image"), (req, res) => {
   try {
     const products = readProducts();
     const index = products.findIndex((p) => p.id == req.params.id);
+    if (index === -1) return res.status(404).json({ message: "Produk tidak ditemukan" });
 
-    if (index === -1)
-      return res.status(404).json({ message: "Produk tidak ditemukan" });
-
-    let updated = normalizeProduct({
-      ...products[index],
-      ...req.body,
-    });
-
-    if (req.file) {
-      updated.image = "assets/images/products/" + req.file.filename;
-    }
+    let updated = normalizeProduct({ ...products[index], ...req.body });
+    if (req.file) updated.image = "assets/images/products/" + req.file.filename;
 
     products[index] = updated;
     writeProducts(products);
-
     res.json({ message: "Produk berhasil diupdate", data: updated });
   } catch (err) {
     console.error(err);
@@ -156,9 +140,19 @@ app.delete("/api/products/:id", (req, res) => {
   res.json({ message: "Produk berhasil dihapus" });
 });
 
-/* ================= ORDERS ================= */
+// =================== ORDERS ===================
 app.get("/api/orders", (req, res) => {
   res.json(readOrders());
+});
+
+app.put("/api/orders/:id/status", (req, res) => {
+  const orders = readOrders();
+  const order = orders.find((o) => o.id == req.params.id);
+  if (!order) return res.status(404).json({ message: "Order tidak ditemukan" });
+
+  order.status = req.body.status || order.status;
+  writeOrders(orders);
+  res.json({ message: "Status berhasil diperbarui", data: order });
 });
 
 app.post("/api/orders", (req, res) => {
@@ -173,33 +167,25 @@ app.post("/api/orders", (req, res) => {
   }
 });
 
-/* ================= AUTH ================= */
+// =================== AUTH ===================
 app.post("/api/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
     if (!name || !email || !password)
       return res.status(400).json({ message: "Data tidak lengkap" });
 
     let users = readUsers();
-
     if (users.find((u) => u.email === email))
       return res.status(400).json({ message: "Email sudah terdaftar" });
 
     const hash = await bcrypt.hash(password, 10);
-
     const user = { id: Date.now(), name, email, password: hash, role: "admin" };
     users.push(user);
     writeUsers(users);
 
     res.status(201).json({
       message: "Register berhasil",
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
     });
   } catch (err) {
     console.error(err);
@@ -210,31 +196,21 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const users = readUsers();
-
-    const user = users.find((u) => u.email === email);
+    const user = readUsers().find((u) => u.email === email);
     if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: "Password salah" });
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      SECRET,
-      { expiresIn: "1d" },
-    );
-
-    res.json({
-      message: "Login berhasil",
-      token,
-      user: { name: user.name, email: user.email, role: user.role },
-    });
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET, { expiresIn: "1d" });
+    res.json({ message: "Login berhasil", token, user: { name: user.name, email: user.email, role: user.role } });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`),
-);
+// =================== START SERVER ===================
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});

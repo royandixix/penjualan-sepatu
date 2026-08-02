@@ -17,6 +17,8 @@ app.controller("HeaderController", function ($scope, $rootScope, $location) {
     }
   }
 
+  
+
   function updateCounts() {
     $scope.cartCount = getCart().length;
     $scope.wishlistCount = getWishlist().length;

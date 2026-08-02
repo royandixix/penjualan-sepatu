@@ -214,4 +214,4 @@ Buka file `index.html` langsung di browser, atau gunakan ekstensi **Live Server*
 
 ## 👨‍💻 Author
 
-**royandixix** — [GitHub](https://github.com/royandixix)
+**royandixix** — [GitHub](https://github.com/royandixix)# sepatu

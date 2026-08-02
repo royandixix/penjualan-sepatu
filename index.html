@@ -13,21 +13,22 @@
     <link rel="stylesheet" href="css/user.css">
     <link rel="stylesheet" href="css/cart.css">
 
+    <!-- FIX GOOGLE TRANSLATE -->
     <style>
-        .goog-te-banner-frame.skiptranslate { display:none !important; }
-        body { top:0 !important; }
-        .goog-te-balloon-frame { display:none !important; }
-        font { background:transparent !important; box-shadow:none !important; }
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+        .goog-te-balloon-frame { display: none !important; }
+        font { background: transparent !important; box-shadow: none !important; }
     </style>
 
     <!-- ANGULAR -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.8.2/angular-route.min.js"></script>
 
-    <!-- CHART -->
+    <!-- LIB -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- APP -->
+    <!-- APP CORE -->
     <script src="app.js"></script>
 
     <!-- SERVICES -->
@@ -40,50 +41,46 @@
     <script src="js/directives/productCardDirective.js"></script>
 
     <!-- USER CONTROLLERS -->
+    <script src="js/controllers/auth/user/LoginController.js"></script>
+    <script src="js/controllers/auth/user/RegisterController.js"></script>
     <script src="js/controllers/user/components/header/HeaderController.js"></script>
     <script src="js/controllers/user/shop/ShopController.js"></script>
     <script src="js/controllers/user/cart/CartController.js"></script>
     <script src="js/controllers/user/checkout/CheckoutController.js"></script>
     <script src="js/controllers/user/produk-populer/ProdukPopulerController.js"></script>
 
-    <!-- ADMIN AUTH -->
+    <!-- ADMIN CONTROLLERS -->
     <script src="js/controllers/auth/admin/AdminLoginController.js"></script>
     <script src="js/controllers/auth/admin/AdminRegisterController.js"></script>
-
-    <!-- ADMIN CONTROLLERS -->
     <script src="js/controllers/admin/dashboard/AdminDashboardController.js"></script>
     <script src="js/controllers/admin/product/ProductsAdminController.js"></script>
     <script src="js/controllers/admin/order/AdminOrdersController.js"></script>
+
+    <!-- MIDTRANS -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="Mid-client-DL-_wEu3C1qfaf0v"></script>
 
 </head>
 
 <body ng-cloak>
 
-    <!-- ================= ADMIN ================= -->
+    <!-- ================= ADMIN LAYOUT ================= -->
     <div ng-if="isAdminPage && !isAdminAuthPage">
         <div ng-controller="AdminLayoutCtrl">
             <div ng-include="'views/layouts/admin-layout.html'"></div>
         </div>
     </div>
 
-    <!-- ADMIN LOGIN / REGISTER -->
-    <div ng-if="isAdminAuthPage">
-        <div ng-view></div>
-    </div>
-
-    <!-- ================= USER ================= -->
+    <!-- ================= USER AREA ================= -->
     <div ng-if="!isAdminPage">
-
-        <!-- HEADER -->
         <header class="sticky-top bg-white shadow-sm" style="z-index:1050;">
             <div ng-include="'views/partials/user-header.html'"></div>
             <div ng-include="'views/partials/navbar/user-navbar.html'"></div>
         </header>
-
-        <!-- 🔥 INI YANG PALING PENTING -->
-        <div ng-view></div>
-
     </div>
+
+    <!-- 🔥 SATU-SATUNYA TEMPAT ROUTE -->
+    <div ng-view></div>
 
     <!-- GOOGLE TRANSLATE -->
     <div id="google_translate_element"></div>
@@ -91,18 +88,20 @@
     <!-- BOOTSTRAP -->
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- GOOGLE TRANSLATE SCRIPT -->
     <script>
-    function googleTranslateElementInit(){
-        new google.translate.TranslateElement({
-            pageLanguage:'id',
-            includedLanguages:'en,id',
-            layout:google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay:false
-        },'google_translate_element');
-    }
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'id',
+                includedLanguages: 'en,id',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
     </script>
 
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
+
 </html>

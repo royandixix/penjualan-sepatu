@@ -23,8 +23,15 @@
   {
     "id": 1773949258230,
     "name": "randi",
-    "email": "randi@gmail.com",   
+    "email": "randi@gmail.com",
     "password": "$2b$10$XZpy9GGQmHzgObxhzFdYT.o/c3djbzCIEppZjt9/6r.kLZZxRg07e",
     "role": "admin"
-  } 
+  },
+  {
+    "id": 1775329349790,
+    "name": "Randiroy",
+    "email": "rroyandiundipa@gmail.com",
+    "password": "$2b$10$LVhIPYVVjmKeKjUXnBXaJecHokQskzFGb8TEmaB1DpjnMK8F/1usO",
+    "role": "admin"
+  }
 ]

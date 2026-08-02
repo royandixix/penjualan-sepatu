@@ -1,6 +1,7 @@
 app.controller("CartController", function ($scope, $location, $http) {
   const API_URL = "http://localhost:3000";
 
+  // 🛒 Load cart dari localStorage
   function loadCart() {
     try {
       const c = JSON.parse(localStorage.getItem("cart")) || [];
@@ -14,85 +15,117 @@ app.controller("CartController", function ($scope, $location, $http) {
   }
 
   $scope.cart = loadCart();
+  $scope.isLoading = false;
 
+  // 💾 Update cart
   $scope.updateCart = function () {
     localStorage.setItem("cart", JSON.stringify($scope.cart));
   };
 
-  $scope.removeItem = function (i) {
-    if (i >= 0 && i < $scope.cart.length) {
-      $scope.cart.splice(i, 1);
+  // ❌ Hapus item
+  $scope.removeItem = function (index) {
+    if (index >= 0 && index < $scope.cart.length) {
+      $scope.cart.splice(index, 1);
       $scope.updateCart();
     }
   };
 
-  $scope.changeQty = function (i, d) {
-    if (!i.qty) i.qty = 1;
-    i.qty += d;
-    if (i.qty < 1) i.qty = 1;
+  // 🔢 Ubah qty
+  $scope.changeQty = function (item, delta) {
+    if (!item.qty) item.qty = 1;
+    item.qty += delta;
+
+    if (item.qty < 1) item.qty = 1;
+
     $scope.updateCart();
   };
 
+  // 💰 Hitung total
   $scope.getTotal = function () {
-    return $scope.cart.reduce(function (t, i) {
-      if (!i.price || !i.qty) return t;
-      return t + Number(i.price) * Number(i.qty);
+    return $scope.cart.reduce(function (total, item) {
+      if (!item.price || !item.qty) return total;
+      return total + Number(item.price) * Number(item.qty);
     }, 0);
   };
 
-  $scope.formatRupiah = function (a) {
+  // 💸 Format rupiah
+  $scope.formatRupiah = function (amount) {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-    }).format(a || 0);
+    }).format(amount || 0);
   };
 
+  // 🚀 CHECKOUT (IMPROVED)
   $scope.checkoutCart = function () {
-    const u = JSON.parse(localStorage.getItem("authUser"));
+    const user = JSON.parse(localStorage.getItem("authUser"));
 
-    if (!u) {
+    // 🔒 Validasi login
+    if (!user) {
       alert("Silakan login terlebih dahulu!");
       $location.path("/login");
       return;
     }
 
-    if ($scope.cart.length === 0) {
+    // 🛒 Validasi cart
+    if (!$scope.cart || $scope.cart.length === 0) {
       alert("Keranjang masih kosong!");
       return;
     }
 
-    const r = $scope.cart
-      .map(function (i) {
-        if (!i.id || !i.price || !i.qty) return null;
+    // ⛔ Anti double klik
+    if ($scope.isLoading) return;
+    $scope.isLoading = true;
 
-        const o = {
-          id: "ORD-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
-          user_id: u.id || null,
-          product_id: i.id,
-          name: i.name,
-          price: Number(i.price),
-          size: i.size || "-",
-          qty: Number(i.qty),
-          total: Number(i.price) * Number(i.qty),
-          date: new Date().toISOString().slice(0, 10),
-          status: "Diproses",
+    // 🔍 Validasi item
+    const invalidItem = $scope.cart.find(function (item) {
+      return !item.id || !item.price || !item.qty;
+    });
+
+    if (invalidItem) {
+      alert("Ada item tidak valid di keranjang!");
+      $scope.isLoading = false;
+      return;
+    }
+
+    // 📦 Format 1 order (bukan per item)
+    const order = {
+      id: "ORD-" + Date.now(),
+      user_id: user.id || null,
+      items: $scope.cart.map(function (item) {
+        return {
+          product_id: item.id,
+          name: item.name,
+          price: Number(item.price),
+          qty: Number(item.qty),
+          size: item.size || "-",
+          total: Number(item.price) * Number(item.qty),
         };
+      }),
+      total_amount: $scope.getTotal(),
+      total_items: $scope.cart.length,
+      date: new Date().toISOString(),
+      status: "Diproses",
+    };
 
-        return $http.post(API_URL + "/api/orders", o);
-      })
-      .filter(function (x) {
-        return x !== null;
-      });
-
-    Promise.all(r)
+    // 📡 Kirim ke backend
+    $http.post(API_URL + "/api/orders", order)
       .then(function () {
         alert("Checkout berhasil!");
+
+        // 🧹 Reset cart
         localStorage.removeItem("cart");
         $scope.cart = [];
+
+        // 🔄 Redirect
         $location.path("/shop");
       })
-      .catch(function () {
+      .catch(function (err) {
+        console.error(err);
         alert("Checkout gagal!");
+      })
+      .finally(function () {
+        $scope.isLoading = false;
       });
   };
 });

@@ -1,12 +1,14 @@
-<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-white" ng-controller="RegisterController">
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-white">
     <div class="row w-100 align-items-center justify-content-center" style="max-width: 1100px;">
         
+        <!-- Bagian Kiri (Gambar & Promo) -->
         <div class="col-md-6 d-none d-md-flex flex-column align-items-center justify-content-center text-center p-5">
-            <img src="public/images/undraw_order-coffee_pw24.png" alt="Illustration" class="img-fluid" style="max-width: 420px;">
+            <img src="public/images/undraw_order-coffee_pw24.png" class="img-fluid" style="max-width: 420px;">
             <h5 class="fw-bold mt-4 mb-1">What are you waiting for?</h5>
             <p class="text-muted small">Immerse yourself in the latest trend in fashion</p>
         </div>
 
+        <!-- Bagian Kanan (Form) -->
         <div class="col-md-6 d-flex align-items-center justify-content-center p-4">
             <div class="w-100" style="max-width: 400px;">
                 <h2 class="fw-bold mb-1" style="font-size: 1.8rem;">Selamat Datang!</h2>
@@ -16,48 +18,59 @@
                 </p>
 
                 <form ng-submit="register()">
+
                     <div class="mb-3">
-                        <input type="email" 
-                               class="form-control custom-input" 
-                               placeholder="Masukan email" 
-                               ng-model="user.email" 
+                        <input type="email"
+                               class="form-control custom-input"
+                               placeholder="Masukan email"
+                               ng-model="user.email"
                                required>
                     </div>
 
                     <div class="mb-3">
-                        <input type="text" 
-                               class="form-control custom-input" 
-                               placeholder="Masukan nomor hp." 
-                               ng-model="user.phone" 
+                        <input type="text"
+                               class="form-control custom-input"
+                               placeholder="Masukan nomor hp."
+                               ng-model="user.phone"
                                required>
                     </div>
 
                     <div class="mb-3">
-                        <input type="text" 
-                               class="form-control custom-input" 
-                               placeholder="Masukan nama" 
-                               ng-model="user.name" 
+                        <input type="text"
+                               class="form-control custom-input"
+                               placeholder="Masukan nama"
+                               ng-model="user.name"
                                required>
                     </div>
 
+                    <!-- PASSWORD -->
                     <div class="mb-3 position-relative">
-                        <input type="password" 
-                               class="form-control custom-input" 
-                               placeholder="Masukan password" 
-                               ng-model="user.password" 
+                        <input ng-attr-type="{{showPassword ? 'text' : 'password'}}"
+                               class="form-control custom-input"
+                               placeholder="Masukan password"
+                               ng-model="user.password"
                                required>
-                        <i class="far fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 text-muted" style="cursor: pointer;"></i>
+
+                        <i class="fa-solid position-absolute top-50 end-0 translate-middle-y me-3"
+                           ng-class="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+                           ng-click="togglePassword()"
+                           style="cursor: pointer;"></i>
                     </div>
 
+                    <!-- CONFIRM PASSWORD -->
                     <div class="mb-4 position-relative">
-                        <input type="password" 
-                               class="form-control custom-input" 
-                               placeholder="Masukan konfirmasi password" 
-                               ng-model="user.confirmPassword" 
+                        <input ng-attr-type="{{showConfirm ? 'text' : 'password'}}"
+                               class="form-control custom-input"
+                               placeholder="Masukan konfirmasi password"
+                               ng-model="user.confirmPassword"
                                required>
-                        <i class="far fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 text-muted" style="cursor: pointer;"></i>
+
+                        <i class="fa-solid position-absolute top-50 end-0 translate-middle-y me-3"
+                           ng-class="showConfirm ? 'fa-eye' : 'fa-eye-slash'"
+                           ng-click="toggleConfirm()"
+                           style="cursor: pointer;"></i>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-register-807 w-100">
                         Daftar
                     </button>
@@ -66,12 +79,14 @@
                         Sudah punya akun? 
                         <a href="#/login" class="text-decoration-none fw-bold" style="color: #0b7543;">Login</a>
                     </p>
+
                 </form>
             </div>
         </div>
 
     </div>
 
+    <!-- WhatsApp Floating -->
     <a href="#" class="wa-float shadow-sm">
         <span class="wa-label">Fast Respon 24/7 ⚡</span>
         <div class="wa-circle">
@@ -80,62 +95,77 @@
     </a>
 </div>
 
+<!-- CSS -->
 <style>
-    /* Styling agar identik dengan 807Garage */
-    .custom-input {
-        background-color: #f8f9fa !important;
-        border: 1px solid #eeeeee !important;
-        border-radius: 6px !important;
-        padding: 12px 16px !important;
-        font-size: 14px !important;
-    }
+/* Input Custom */
+.custom-input {
+    background-color: #f8f9fa !important;
+    border: 1px solid #eeeeee !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+}
 
-    .custom-input:focus {
-        background-color: #ffffff !important;
-        border-color: #0b7543 !important;
-        box-shadow: none !important;
-    }
+.custom-input:focus {
+    background-color: #ffffff !important;
+    border-color: #0b7543 !important;
+    box-shadow: none !important;
+}
 
-    .btn-register-807 {
-        background-color: #e9ecef !important; /* Warna default tombol Daftar sebelum hover/isi */
-        color: #6c757d !important;
-        border: none !important;
-        border-radius: 6px !important;
-        padding: 12px !important;
-        font-weight: 700 !important;
-        font-size: 15px !important;
-    }
+/* Tombol Daftar Hijau */
+.btn-register-807 {
+    background-color: #0b7543 !important; /* hijau dasar */
+    color: #ffffff !important; /* teks putih */
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    transition: background-color 0.3s, transform 0.2s; /* smooth hover */
+}
 
-    /* Floating WhatsApp Button */
-    .wa-float {
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        z-index: 99;
-    }
+.btn-register-807:hover {
+    background-color: #0d9a57 !important; /* hijau lebih terang saat hover */
+    transform: translateY(-2px); /* efek naik sedikit */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* bayangan lembut */
+    cursor: pointer;
+}
 
-    .wa-label {
-        background: #f1f3f5;
-        color: #444;
-        padding: 6px 15px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        margin-right: 10px;
-    }
+.btn-register-807:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 117, 67, 0.4);
+}
 
-    .wa-circle {
-        background-color: #25D366;
-        color: white;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
+/* WhatsApp Floating */
+.wa-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    z-index: 99;
+}
+
+.wa-label {
+    background: #f1f3f5;
+    color: #444;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.wa-circle {
+    background-color: #25D366;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
 </style>
